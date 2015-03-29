@@ -12,15 +12,38 @@ from __future__ import unicode_literals
 from django.db import models
 
 
+class AuthorizedToUse(models.Model):
+    psin = models.ForeignKey('Personnel', db_column='PSIN')  # Field name made lowercase.
+    ename = models.ForeignKey('Equipment', db_column='ENAME', related_name='+')  # Field name made lowercase.
+    serial_no = models.ForeignKey('Equipment', db_column='SERIAL_NO')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'AUTHORIZED_TO_USE'
 
 
+class Award(models.Model):
+    code = models.IntegerField(db_column='CODE', primary_key=True)  # Field name made lowercase.
+    name = models.CharField(db_column='NAME', max_length=30, blank=True)  # Field name made lowercase.
 
+    class Meta:
+        managed = False
+        db_table = 'AWARD'
+
+
+class AwardedTo(models.Model):
+    psin = models.ForeignKey('Person', db_column='PSIN')  # Field name made lowercase.
+    code = models.IntegerField(db_column='CODE')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'AWARDED_TO'
 
 
 class Base(models.Model):
     bid = models.CharField(db_column='BID', primary_key=True, max_length=5)  # Field name made lowercase.
     bname = models.CharField(db_column='BNAME', max_length=30)  # Field name made lowercase.
-    typeB = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
+    type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     location = models.CharField(db_column='LOCATION', max_length=30, blank=True)  # Field name made lowercase.
 
     class Meta:
@@ -41,9 +64,9 @@ class Conflict(models.Model):
 
 class Equipment(models.Model):
     ename = models.CharField(db_column='ENAME', max_length=30)  # Field name made lowercase.
-    serial_no = models.CharField(db_column='SERIAL_NO', primary_key=True, max_length=5)  # Field name made lowercase.
+    serial_no = models.CharField(db_column='SERIAL_NO', max_length=5)  # Field name made lowercase.
     status = models.CharField(db_column='STATUS', max_length=30, blank=True)  # Field name made lowercase.
-    typeE = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
+    type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     bid = models.ForeignKey(Base, db_column='BID', blank=True, null=True)  # Field name made lowercase.
     cid = models.ForeignKey(Conflict, db_column='CID', blank=True, null=True)  # Field name made lowercase.
 
@@ -53,9 +76,9 @@ class Equipment(models.Model):
 
 
 class Operations(models.Model):
-    cid = models.ForeignKey(Conflict, db_column='CID', primary_key=True)  # Field name made lowercase.
+    cid = models.ForeignKey(Conflict, db_column='CID')  # Field name made lowercase.
     oname = models.CharField(db_column='ONAME', max_length=30)  # Field name made lowercase.
-    typeO = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
+    type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -91,7 +114,7 @@ class Personnel(models.Model):
 class Unit(models.Model):
     uid = models.CharField(db_column='UID', primary_key=True, max_length=5)  # Field name made lowercase.
     uname = models.CharField(db_column='UNAME', max_length=40)  # Field name made lowercase.
-    typeU = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
+    type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     bid = models.ForeignKey(Base, db_column='BID', blank=True, null=True)  # Field name made lowercase.
     cid = models.ForeignKey(Conflict, db_column='CID', blank=True, null=True)  # Field name made lowercase.
     commander_sin = models.ForeignKey(Personnel, db_column='COMMANDER_SIN', blank=True, null=True)  # Field name made lowercase.
@@ -108,31 +131,3 @@ class Veteran(models.Model):
     class Meta:
         managed = False
         db_table = 'VETERAN'
-
-
-class AuthorizedToUse(models.Model):
-    psin = models.ForeignKey(Personnel, db_column='PSIN')  # Field name made lowercase.
-    ename = models.ForeignKey(Equipment, db_column='ENAME', related_name='+')  # Field name made lowercase.
-    serial_no = models.ForeignKey(Equipment, db_column='SERIAL_NO')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'AUTHORIZED_TO_USE'
-
-
-class Award(models.Model):
-    code = models.IntegerField(db_column='CODE', primary_key=True)  # Field name made lowercase.
-    name = models.CharField(db_column='NAME', max_length=30, blank=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'AWARD'
-
-
-class AwardedTo(models.Model):
-    psin = models.ForeignKey(Person, db_column='PSIN')  # Field name made lowercase.
-    code = models.IntegerField(db_column='CODE')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'AWARDED_TO'
