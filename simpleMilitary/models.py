@@ -41,7 +41,7 @@ class Conflict(models.Model):
 
 class Equipment(models.Model):
     ename = models.CharField(db_column='ENAME', max_length=30)  # Field name made lowercase.
-    serial_no = models.CharField(db_column='SERIAL_NO', max_length=5)  # Field name made lowercase.
+    serial_no = models.CharField(db_column='SERIAL_NO', primary_key=True, max_length=5)  # Field name made lowercase.
     status = models.CharField(db_column='STATUS', max_length=30, blank=True)  # Field name made lowercase.
     typeE = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     bid = models.ForeignKey(Base, db_column='BID', blank=True, null=True)  # Field name made lowercase.
@@ -53,7 +53,7 @@ class Equipment(models.Model):
 
 
 class Operations(models.Model):
-    cid = models.ForeignKey(Conflict, db_column='CID')  # Field name made lowercase.
+    cid = models.ForeignKey(Conflict, db_column='CID', primary_key=True)  # Field name made lowercase.
     oname = models.CharField(db_column='ONAME', max_length=30)  # Field name made lowercase.
     typeO = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
 

@@ -56,8 +56,7 @@ WSGI_APPLICATION = 'militarysite.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-# MODIFY THE SSL CERT STUFF YOURSELF. Do not push the ssl cert files
-# to git!
+# Do not push the ssl cert files to git!
 
 
 DATABASES = {
