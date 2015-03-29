@@ -60,20 +60,21 @@ WSGI_APPLICATION = 'militarysite.wsgi.application'
 
 
 DATABASES = {
-'default': {
-              'ENGINE': 'django.db.backends.mysql',
-              'NAME': 'MILITARY',
-              'USER': 'root',
-              'PASSWORD': '471lbangK',
-              'HOST': '173.194.248.232',
-              'PORT': '3306'
-              'OPTIONS':  {
-                        'ssl': {'ca': 'server-ca.pem',
-                                'cert': 'client-cert.pem',
-                                'key': 'client-key.pem'
-                                }
-                          }
-            }
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'MILITARY',
+        'USER': 'root',
+        'PASSWORD': '471lbangK',
+        'HOST': '173.194.248.232',
+        'PORT': '3306',
+        'OPTIONS':  {
+            'ssl': {
+                'ca': 'server-ca.pem',
+                'cert': 'client-cert.pem',
+                'key': 'client-key.pem',
+            },
+        },
+    }
 }
 
 # Internationalization
