@@ -17,7 +17,7 @@ class AuthorizedToUse(models.Model):
     serialno = models.ForeignKey('Equipment', db_column='SERIALNO')  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        unique_together = ('psin', 'serialno')
         db_table = 'AUTHORIZED_TO_USE'
 
 
@@ -26,7 +26,6 @@ class Award(models.Model):
     aname = models.CharField(db_column='ANAME', max_length=30, blank=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
         db_table = 'AWARD'
 
 
@@ -35,34 +34,32 @@ class AwardedTo(models.Model):
     code = models.ForeignKey(Award, db_column='CODE')  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        unique_together = ('sin', 'code')        
         db_table = 'AWARDED_TO'
 
 
 class Base(models.Model):
-    bid = models.CharField(db_column='BID', primary_key=True, max_length=5)  # Field name made lowercase.
+    bid = models.CharField(db_column='BID', primary_key=True, max_length=5, primary_key=True)  # Field name made lowercase.
     bname = models.CharField(db_column='BNAME', max_length=30)  # Field name made lowercase.
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     location = models.CharField(db_column='LOCATION', max_length=30, blank=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
         db_table = 'BASE'
 
 
 class Conflict(models.Model):
-    cid = models.CharField(db_column='CID', primary_key=True, max_length=5)  # Field name made lowercase.
+    cid = models.CharField(db_column='CID', primary_key=True, max_length=5, primary_key=True)  # Field name made lowercase.
     cname = models.CharField(db_column='CNAME', max_length=30)  # Field name made lowercase.
     start_date = models.DateField(db_column='START_DATE', blank=True, null=True)  # Field name made lowercase.
     status = models.CharField(db_column='STATUS', max_length=10, blank=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
         db_table = 'CONFLICT'
 
 
 class Equipment(models.Model):
-    serialno = models.CharField(db_column='SERIALNO', primary_key=True, max_length=5)  # Field name made lowercase.
+    serialno = models.CharField(db_column='SERIALNO', primary_key=True, max_length=5, primary_key=True)  # Field name made lowercase.
     ename = models.CharField(db_column='ENAME', max_length=30, blank=True)  # Field name made lowercase.
     status = models.CharField(db_column='STATUS', max_length=30, blank=True)  # Field name made lowercase.
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
@@ -70,22 +67,20 @@ class Equipment(models.Model):
     cid = models.ForeignKey(Conflict, db_column='CID', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
         db_table = 'EQUIPMENT'
 
 
 class Operations(models.Model):
-    cid = models.ForeignKey(Conflict, db_column='CID')  # Field name made lowercase.
+    cid = models.ForeignKey(Conflict, db_column='CID', primary_key=True)  # Field name made lowercase.
     oname = models.CharField(db_column='ONAME', max_length=30)  # Field name made lowercase.
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
         db_table = 'OPERATIONS'
 
 
 class Person(models.Model):
-    sin = models.CharField(db_column='SIN', primary_key=True, max_length=9)  # Field name made lowercase.
+    sin = models.CharField(db_column='SIN', primary_key=True, max_length=9, primary_key=True)  # Field name made lowercase.
     address = models.CharField(db_column='ADDRESS', max_length=50, blank=True)  # Field name made lowercase.
     fname = models.CharField(db_column='FNAME', max_length=15)  # Field name made lowercase.
     lname = models.CharField(db_column='LNAME', max_length=15)  # Field name made lowercase.
@@ -94,24 +89,22 @@ class Person(models.Model):
     enlist_date = models.DateField(db_column='ENLIST_DATE', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
         db_table = 'PERSON'
 
 
 class Personnel(models.Model):
-    psin = models.ForeignKey(Person, db_column='PSIN', primary_key=True)  # Field name made lowercase.
+    psin = models.ForeignKey(Person, db_column='PSIN', primary_key=True, primary_key=True)  # Field name made lowercase.
     rank = models.CharField(db_column='RANK', max_length=30, blank=True)  # Field name made lowercase.
     status = models.CharField(db_column='STATUS', max_length=30)  # Field name made lowercase.
     uid = models.ForeignKey('Unit', db_column='UID', blank=True, null=True)  # Field name made lowercase.
     supersin = models.ForeignKey('self', db_column='SUPERSIN', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
         db_table = 'PERSONNEL'
 
 
 class Unit(models.Model):
-    uid = models.CharField(db_column='UID', primary_key=True, max_length=5)  # Field name made lowercase.
+    uid = models.CharField(db_column='UID', primary_key=True, max_length=5, primary_key=True)  # Field name made lowercase.
     uname = models.CharField(db_column='UNAME', max_length=40)  # Field name made lowercase.
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     bid = models.ForeignKey(Base, db_column='BID', blank=True, null=True)  # Field name made lowercase.
@@ -119,14 +112,12 @@ class Unit(models.Model):
     commander_sin = models.ForeignKey(Personnel, db_column='COMMANDER_SIN', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
         db_table = 'UNIT'
 
 
 class Veteran(models.Model):
-    vsin = models.ForeignKey(Person, db_column='VSIN', primary_key=True)  # Field name made lowercase.
+    vsin = models.ForeignKey(Person, db_column='VSIN', primary_key=True, primary_key=True)  # Field name made lowercase.
     end_date = models.DateField(db_column='END_DATE', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
         db_table = 'VETERAN'
