@@ -13,11 +13,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AuthorizedToUse',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.IntegerField(serialize=False, primary_key=True, db_column='ID')),
             ],
             options={
                 'db_table': 'AUTHORIZED_TO_USE',
-                'managed': False,
             },
             bases=(models.Model,),
         ),
@@ -29,18 +28,17 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'AWARD',
-                'managed': False,
             },
             bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='AwardedTo',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.IntegerField(serialize=False, primary_key=True, db_column='ID')),
+                ('code', models.ForeignKey(db_column='CODE', blank=True, to='simpleMilitary.Award', null=True)),
             ],
             options={
                 'db_table': 'AWARDED_TO',
-                'managed': False,
             },
             bases=(models.Model,),
         ),
@@ -54,7 +52,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'BASE',
-                'managed': False,
             },
             bases=(models.Model,),
         ),
@@ -68,7 +65,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'CONFLICT',
-                'managed': False,
             },
             bases=(models.Model,),
         ),
@@ -79,23 +75,24 @@ class Migration(migrations.Migration):
                 ('ename', models.CharField(max_length=30, db_column='ENAME', blank=True)),
                 ('status', models.CharField(max_length=30, db_column='STATUS', blank=True)),
                 ('type', models.CharField(max_length=30, db_column='TYPE', blank=True)),
+                ('bid', models.ForeignKey(db_column='BID', blank=True, to='simpleMilitary.Base', null=True)),
+                ('cid', models.ForeignKey(db_column='CID', blank=True, to='simpleMilitary.Conflict', null=True)),
             ],
             options={
                 'db_table': 'EQUIPMENT',
-                'managed': False,
             },
             bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Operations',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('oname', models.CharField(max_length=30, db_column='ONAME')),
+                ('oname', models.CharField(max_length=30, db_column='ONAME', blank=True)),
                 ('type', models.CharField(max_length=30, db_column='TYPE', blank=True)),
+                ('id', models.IntegerField(serialize=False, primary_key=True, db_column='ID')),
+                ('cid', models.ForeignKey(db_column='CID', blank=True, to='simpleMilitary.Conflict', null=True)),
             ],
             options={
                 'db_table': 'OPERATIONS',
-                'managed': False,
             },
             bases=(models.Model,),
         ),
@@ -112,7 +109,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'PERSON',
-                'managed': False,
             },
             bases=(models.Model,),
         ),
@@ -122,10 +118,10 @@ class Migration(migrations.Migration):
                 ('psin', models.ForeignKey(primary_key=True, db_column='PSIN', serialize=False, to='simpleMilitary.Person')),
                 ('rank', models.CharField(max_length=30, db_column='RANK', blank=True)),
                 ('status', models.CharField(max_length=30, db_column='STATUS')),
+                ('supersin', models.ForeignKey(db_column='SUPERSIN', blank=True, to='simpleMilitary.Personnel', null=True)),
             ],
             options={
                 'db_table': 'PERSONNEL',
-                'managed': False,
             },
             bases=(models.Model,),
         ),
@@ -135,10 +131,12 @@ class Migration(migrations.Migration):
                 ('uid', models.CharField(max_length=5, serialize=False, primary_key=True, db_column='UID')),
                 ('uname', models.CharField(max_length=40, db_column='UNAME')),
                 ('type', models.CharField(max_length=30, db_column='TYPE', blank=True)),
+                ('bid', models.ForeignKey(db_column='BID', blank=True, to='simpleMilitary.Base', null=True)),
+                ('cid', models.ForeignKey(db_column='CID', blank=True, to='simpleMilitary.Conflict', null=True)),
+                ('commander_sin', models.ForeignKey(db_column='COMMANDER_SIN', blank=True, to='simpleMilitary.Personnel', null=True)),
             ],
             options={
                 'db_table': 'UNIT',
-                'managed': False,
             },
             bases=(models.Model,),
         ),
@@ -150,8 +148,43 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'VETERAN',
-                'managed': False,
             },
             bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='personnel',
+            name='uid',
+            field=models.ForeignKey(db_column='UID', blank=True, to='simpleMilitary.Unit', null=True),
+            preserve_default=True,
+        ),
+        migrations.AlterUniqueTogether(
+            name='operations',
+            unique_together=set([('cid', 'oname')]),
+        ),
+        migrations.AddField(
+            model_name='awardedto',
+            name='sin',
+            field=models.ForeignKey(db_column='SIN', blank=True, to='simpleMilitary.Person', null=True),
+            preserve_default=True,
+        ),
+        migrations.AlterUniqueTogether(
+            name='awardedto',
+            unique_together=set([('sin', 'code')]),
+        ),
+        migrations.AddField(
+            model_name='authorizedtouse',
+            name='psin',
+            field=models.ForeignKey(db_column='PSIN', blank=True, to='simpleMilitary.Personnel', null=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='authorizedtouse',
+            name='serialno',
+            field=models.ForeignKey(db_column='SERIALNO', blank=True, to='simpleMilitary.Equipment', null=True),
+            preserve_default=True,
+        ),
+        migrations.AlterUniqueTogether(
+            name='authorizedtouse',
+            unique_together=set([('psin', 'serialno')]),
         ),
     ]
