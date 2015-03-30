@@ -10,7 +10,7 @@ import simplejson as json
 from django.core import serializers
 def index(request):
    fields    = Personnel._meta.fields
-   data      = json.loads(serializers.serialize("json", Personnel.objects.all()))
+   data      = json.loads(serializers.serialize("json", Personnel.objects.all().order_by('-psin')))
 
    def parse_data(data):
 
@@ -35,7 +35,7 @@ def index(request):
 
         for d in data:
             # change the 'pk' key name into its actual name in the database
-            d[Person._meta.pk.name] = d.pop('pk')
+            d[Personnel._meta.pk.name] = d.pop('pk')
             # append the flattend dict of each object's field-value to the result
             result.append(flatten_dict(d))
 
