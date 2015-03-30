@@ -83,12 +83,13 @@ window.onload = function(){
 
 
 {% load extratags %}
+
 <table>
     <thead>
         <tr>
             {% for field in fields %}
                 <th>
-                {% get_verbose_name field %}
+                {{ field }}
                 </th>
             {% endfor %}
         </tr>
