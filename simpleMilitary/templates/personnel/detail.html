@@ -1,10 +1,7 @@
 <h1>{{ personnel.psin.fname }}</h1>
 <ul>
 {% if request.user.username != personnel.psin %}
-{{"ERROR you are:" }}
-{{ request.user.username }}
-{{"not" }}
-{{personnel.psin.sin}}
+{{"ERROR you are not authorised to view this page!" }}
 {% else %}
 {{ personnel }}
 {% endif %}
