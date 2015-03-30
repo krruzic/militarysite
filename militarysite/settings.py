@@ -61,7 +61,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'militarysite.urls'
 
 WSGI_APPLICATION = 'militarysite.wsgi.application'
-
+LOGIN_URL = '/accounts/login/'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
