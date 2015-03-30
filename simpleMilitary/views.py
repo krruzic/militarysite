@@ -6,11 +6,14 @@ from simpleMilitary.models import Personnel
 from simpleMilitary.models import Person
 # Create your views here.
 #from django.utils
-import simplejson as json
+try:
+  import simplejson as json
+except ImportError:
+  import json
 from django.core import serializers
 def index(request):
-   fields    = Personnel._meta.fields
-   data      = json.loads(serializers.serialize("json", Personnel.objects.all().order_by('-psin')))
+   fields    = {Person._meta.get_field("fname"),Person._meta.get_field("lname")}
+   data      = json.loads(serializers.serialize("json", Person.objects.all().order_by('-sin')))
 
    def parse_data(data):
 
@@ -18,11 +21,6 @@ def index(request):
 
         # flatten the dictionary
         def flatten_dict(d):
-            """
-            Because the only nested dict here is the fields, let's just
-            remove the 'fields' suffix so that the fields can be loaded in
-            template by name
-            """
             def items():
                 for key, value in d.items():
                     if isinstance(value, dict):
@@ -47,3 +45,9 @@ def index(request):
        'fields'    : fields,
    })
    return TemplateResponse(request, 'index.html', context_instance)
+
+
+
+def searchResults(request):
+
+    return render(request, 'searchResults.html', {})
