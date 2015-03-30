@@ -46,7 +46,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'simpleMilitary',
-    'django_tables2'
 )
 
 MIDDLEWARE_CLASSES = (
