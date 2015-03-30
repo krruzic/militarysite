@@ -13,7 +13,6 @@ from django.shortcuts import render_to_response
 from django.contrib.auth import authenticate, login
 from django.core.context_processors import csrf
 
-import simplejson as json
 from django.core import serializers
 
 @login_required
