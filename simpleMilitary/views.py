@@ -24,7 +24,7 @@ def index(request):
             bname = p.uid.bid.bname
         except:
             bname = "NULL"
-        names.append({"First Name": p.psin.fname, "Last Name": p.psin.lname, "Base": bname, "PSIN": p.psin})
+        names.append({"First Name": p.psin.fname, "Last Name": p.psin.lname, "Base": bname, "PSIN": p.psin.sin})
 
     return render(request, 'index.html', {'data': names, 'fields': fields})
 
@@ -33,7 +33,7 @@ def personnelDetail(request, personnel_sin):
     try:
         personnel = Personnel.objects.get(pk=personnel_sin)
     except Personnel.DoesNotExist:
-        raise Http404("Question does not exist")
+        raise Http404("Personnel does not exist")
     return render(request, 'personnel/detail.html', {'personnel': personnel})
 
 def login_user(request):
@@ -62,8 +62,9 @@ def login_user(request):
 
 
 def searchResults(request):
-
-    return render(request, 'searchResults.html', {})
+    print "TEST SEARCH"
+    personnelDetail(request, request.GET.get('q'))
+    # return render(request, 'searchResults.html', {})
     names     = []
     fields = {"First Name", "Last Name", "Base"}
     for p in Personnel.objects.all().order_by('psin__fname'):

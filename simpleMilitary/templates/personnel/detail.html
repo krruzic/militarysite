@@ -1,8 +1,8 @@
-<h1>{{ personnel.psin.fname }}</h1>
 <ul>
-{% if request.user.username != personnel.psin %}
-{{"ERROR you are not authorised to view this page!" }}
+{% if request.user.username != personnel.psin.sin %}
+ERROR: {{request.user.username}} is not authorized to view this page
 {% else %}
+<h1>WELCOME: {{ personnel.psin.fname }} {{ personnel.psin.lname }}</h1>
 {{ personnel }}
 {% endif %}
 </ul>

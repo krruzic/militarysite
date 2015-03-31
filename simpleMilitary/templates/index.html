@@ -1,3 +1,8 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-responsive.min.css"/>
+<script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,7 +10,7 @@
 <meta name="ROBOTS" content="NOINDEX, NOFOLLOW" />
 <!-- JAVASCRIPT to clear search text when the field is clicked -->
 <script type="text/javascript">
-window.onload = function(){ 
+window.onload = function(){
     //Get submit button
     var submitbutton = document.getElementById("tfq");
     //Add listener to submit button
@@ -81,10 +86,9 @@ window.onload = function(){
 </body>
 </html>
 
-
 {% load extratags %}
 {{request.user.username}}
-<table>
+<table class="table table-striped table-bordered table-condensed">
     <thead>
         <tr>
             {% for field in fields %}
