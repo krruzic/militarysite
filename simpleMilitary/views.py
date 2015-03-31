@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.template.response import TemplateResponse
 from simpleMilitary.models import Personnel
 from simpleMilitary.models import Person
+from simpleMilitary.models import AuthorizedToUse
 from django.http import Http404
 from django.shortcuts import render
 from django.conf import settings
@@ -15,7 +16,6 @@ from django.core.context_processors import csrf
 
 from django.core import serializers
 
-@login_required
 def index(request):
     names     = []
     fields = {"First Name", "Last Name", "Base", "PSIN"}
@@ -32,9 +32,10 @@ def index(request):
 def personnelDetail(request, personnel_sin):
     try:
         personnel = Personnel.objects.get(pk=personnel_sin)
+        weapons   = AuthorizedToUse.objects.distinct().filter(psin=personnel_sin)
     except Personnel.DoesNotExist:
         raise Http404("Personnel does not exist")
-    return render(request, 'personnel/detail.html', {'personnel': personnel})
+    return render(request, 'personnel/detail.html', {'personnel': personnel, 'weapons': weapons})
 
 def login_user(request):
     c = {}
