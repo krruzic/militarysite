@@ -6,7 +6,9 @@ from django.template.response import TemplateResponse
 from simpleMilitary.models import Personnel
 from simpleMilitary.models import Veteran
 from simpleMilitary.models import Person
+from simpleMilitary.models import Conflict
 from simpleMilitary.models import AuthorizedToUse
+from simpleMilitary.forms import RegistrationForm
 from django.http import Http404
 from django.shortcuts import render
 from django.conf import settings
@@ -96,7 +98,7 @@ def searchResults(request):
     pnames     = []
     vnames     = []
     pfields = {"First Name", "Last Name", "Base"}
-    vfields = {"First Name", "Last Name", "End Date"} 
+    vfields = {"First Name", "Last Name", "End Date"}
     for p in Personnel.objects.order_by('psin__fname').filter(Q(psin__fname__contains=results) | Q(psin__lname__contains=results)):
         try:
             bname = p.uid.bid.bname
@@ -104,7 +106,7 @@ def searchResults(request):
             bname = ""
         pnames.append({"First Name": p.psin.fname, "Last Name": p.psin.lname, "Base": bname})
     for p in Veteran.objects.order_by('vsin__fname').filter(Q(vsin__fname__icontains=results) | Q(vsin__lname__icontains=results)):
-        vnames.append({"First Name": p.vsin.fname, "Last Name": p.vsin.lname, "End Date": p.end_date})    
+        vnames.append({"First Name": p.vsin.fname, "Last Name": p.vsin.lname, "End Date": p.end_date})
     context_instance = RequestContext(request, {
         'pdata'      : pnames,
         'pfields'    : pfields,
