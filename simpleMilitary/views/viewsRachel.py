@@ -1,27 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from django.template.response import TemplateResponse
 from simpleMilitary.models import Personnel
 from simpleMilitary.models import Veteran
-from simpleMilitary.models import Person
 from simpleMilitary.models import Conflict
-from simpleMilitary.models import AuthorizedToUse
-from simpleMilitary.forms import RegistrationForm
-from django.http import Http404
 from django.shortcuts import render
-from django.conf import settings
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response
-from django.contrib.auth import authenticate, login
-from django.core.context_processors import csrf
-from django.db import connection, transaction
+from django.db import connection
 from django.db.models import Q
-import math
-
-from django.core import serializers
-from django.contrib.auth.models import User
 
 
 
@@ -60,39 +44,6 @@ def index(request):
 
     return render(request, 'index.html', {'data': names, 'fields': fields})
 
-@login_required
-def personnelDetail(request, personnel_sin):
-    try:
-        personnel = Personnel.objects.get(pk=personnel_sin)
-    except Personnel.DoesNotExist:
-        raise Http404("Question does not exist")
-    return render(request, 'personnel/detail.html', {'personnel': personnel})
-
-def login_user(request):
-    c = {}
-    c.update(csrf(request))
-    state = "Please log in below..."
-    username = password = ''
-    if request.POST:
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                if request.GET.get('next', False):
-                    return HttpResponseRedirect(request.GET.get('next'))
-                else:
-                    return HttpResponseRedirect('/login/')
-            else:
-                state = "Your account is not active, please contact the site admin."
-        else:
-            state = "Your username and/or password were incorrect."
-
-    return render(request, 'auth.html', {'state':state, 'username': username})
-
-
 def searchResults(request):
     results = request.GET.get('q')
     pnames     = []
@@ -114,23 +65,3 @@ def searchResults(request):
         'vfields'    : vfields,
     })
     return render(request, 'index.html', {'pdata': pnames, 'pfields': pfields, 'vdata': vnames, 'vfields': vfields})
-
-def register_page(request):
-    c = {}
-    error = ""
-    c.update(csrf(request))
-    print "TEST"
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        print "TEST2"
-        if form.is_valid():
-            print "Registered" + form.cleaned_data['username']
-            user = User.objects.create_user(
-                                            username=form.cleaned_data['username'],
-                                            password=form.cleaned_data['password1'],
-                                            )
-            return HttpResponseRedirect('/simpleMilitary/')
-    else:
-        form = RegistrationForm()
-        error = "Invalid registration form"
-    return render(request, 'register.html', {"form": form, "Error": error})
