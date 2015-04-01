@@ -29,6 +29,10 @@ class Award(models.Model):
     class Meta:
         db_table = 'AWARD'
 
+    def __unicode__(self):
+        return (self.aname)
+
+
 
 class AwardedTo(models.Model):
     sin = models.ForeignKey('Person', db_column='SIN', blank=True, null=True)  # Field name made lowercase.
@@ -39,30 +43,37 @@ class AwardedTo(models.Model):
         unique_together = ('sin', 'code')
         db_table = 'AWARDED_TO'
 
-
 class Base(models.Model):
     bid = models.CharField(db_column='BID', primary_key=True, max_length=5)  # Field name made lowercase.
-    bname = models.CharField(db_column='BNAME', max_length=30)  # Field name made lowercase.
+    bname = models.CharField(db_column='BNAME', max_length=30, verbose_name='Base')  # Field name made lowercase.
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     location = models.CharField(db_column='LOCATION', max_length=30, blank=True)  # Field name made lowercase.
 
     class Meta:
         db_table = 'BASE'
 
+    def __unicode__(self):
+        return (self.bname)
+
+
 
 class Conflict(models.Model):
     cid = models.CharField(db_column='CID', primary_key=True, max_length=5)  # Field name made lowercase.
-    cname = models.CharField(db_column='CNAME', max_length=30)  # Field name made lowercase.
+    cname = models.CharField(db_column='CNAME', max_length=30, verbose_name='Conflict')  # Field name made lowercase.
     start_date = models.DateField(db_column='START_DATE', blank=True, null=True)  # Field name made lowercase.
     status = models.CharField(db_column='STATUS', max_length=10, blank=True)  # Field name made lowercase.
 
     class Meta:
         db_table = 'CONFLICT'
 
+    def __unicode__(self):
+        return (self.cname)
+
+
 
 class Equipment(models.Model):
     serialno = models.CharField(db_column='SERIALNO', primary_key=True, max_length=5)  # Field name made lowercase.
-    ename = models.CharField(db_column='ENAME', max_length=30, blank=True)  # Field name made lowercase.
+    ename = models.CharField(db_column='ENAME', max_length=30, blank=True, verbose_name='Name')  # Field name made lowercase.
     status = models.CharField(db_column='STATUS', max_length=30, blank=True)  # Field name made lowercase.
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     bid = models.ForeignKey(Base, db_column='BID', blank=True, null=True)  # Field name made lowercase.
@@ -70,6 +81,10 @@ class Equipment(models.Model):
 
     class Meta:
         db_table = 'EQUIPMENT'
+
+    def __unicode__(self):
+        return (self.ename + "-" + self.serialno)
+
 
 
 class Operations(models.Model):
@@ -82,9 +97,12 @@ class Operations(models.Model):
         unique_together = ('cid', 'oname')
         db_table = 'OPERATIONS'
 
+    def __unicode__(self):
+        return (self.oname + "-" + self.cid.cname)
+
 
 class Person(models.Model):
-    sin = models.CharField(db_column='SIN', primary_key=True, max_length=9)  # Field name made lowercase.
+    sin = models.CharField(db_column='SIN', primary_key=True, max_length=9, verbose_name='SIN')  # Field name made lowercase.
     address = models.CharField(db_column='ADDRESS', max_length=50, blank=True)  # Field name made lowercase.
     fname = models.CharField(db_column='FNAME', max_length=15)  # Field name made lowercase.
     lname = models.CharField(db_column='LNAME', max_length=15)  # Field name made lowercase.
@@ -96,33 +114,50 @@ class Person(models.Model):
         db_table = 'PERSON'
 
     def __unicode__(self):
-        return (self.fname + " " + self.lname + "  " + self.sin)
+        return (self.sin)
 
 
 class Personnel(models.Model):
-    psin = models.ForeignKey(Person, db_column='PSIN', primary_key=True)  # Field name made lowercase.
+    psin = models.ForeignKey(Person, db_column='PSIN', primary_key=True, verbose_name='SIN')  # Field name made lowercase.
     rank = models.CharField(db_column='RANK', max_length=30, blank=True)  # Field name made lowercase.
     status = models.CharField(db_column='STATUS', max_length=30)  # Field name made lowercase.
-    uid = models.ForeignKey('Unit', db_column='UID', blank=True, null=True)  # Field name made lowercase.
-    supersin = models.ForeignKey('self', db_column='SUPERSIN', blank=True, null=True)  # Field name made lowercase.
+    uid = models.ForeignKey('Unit', db_column='UID', blank=True, null=True, verbose_name='Unit')  # Field name made lowercase.
+    supersin = models.ForeignKey('self', db_column='SUPERSIN', blank=True, null=True, verbose_name='Supervisor')  # Field name made lowercase.
 
     class Meta:
         db_table = 'PERSONNEL'
 
     def __unicode__(self):
-        return (self.psin.fname + " " + self.psin.lname + "  " + self.psin.sin)
+        return (self.psin.fname + " " + self.psin.lname)
+
+    def get_fname(self):
+        return self.psin.fname
+
+    def get_lname(self):
+        return self.psin.lname
+
+    def get_sin(self):
+        return self.psin.sin
+
+    get_fname.short_description = 'First Name'  #Renames column head
+    get_lname.short_description = 'Last Name'  #Renames column head
+    get_sin.short_description = 'SIN'  #Renames column head
 
 
 class Unit(models.Model):
     uid = models.CharField(db_column='UID', primary_key=True, max_length=5)  # Field name made lowercase.
-    uname = models.CharField(db_column='UNAME', max_length=40)  # Field name made lowercase.
+    uname = models.CharField(db_column='UNAME', max_length=40, verbose_name='Unit')  # Field name made lowercase.
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     bid = models.ForeignKey(Base, db_column='BID', blank=True, null=True)  # Field name made lowercase.
     cid = models.ForeignKey(Conflict, db_column='CID', blank=True, null=True)  # Field name made lowercase.
-    commander_sin = models.ForeignKey(Personnel, db_column='COMMANDER_SIN', blank=True, null=True)  # Field name made lowercase.
+    commander_sin = models.ForeignKey(Personnel, db_column='COMMANDER_SIN', blank=True, null=True, verbose_name='Commander SIN')  # Field name made lowercase.
 
     class Meta:
         db_table = 'UNIT'
+
+    def __unicode__(self):
+        return (self.uname)
+
 
 
 class Veteran(models.Model):
@@ -131,3 +166,7 @@ class Veteran(models.Model):
 
     class Meta:
         db_table = 'VETERAN'
+
+    def __unicode__(self):
+        return (self.vsin)
+
