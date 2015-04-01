@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.template.response import TemplateResponse
 from simpleMilitary.models import Personnel
 from simpleMilitary.models import Person
+from simpleMilitary.models import AuthorizedToUse
 from django.http import Http404
 from django.shortcuts import render
 from django.conf import settings
@@ -12,10 +13,12 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.contrib.auth import authenticate, login
 from django.core.context_processors import csrf
-
+from simpleMilitary.forms import RegistrationForm
 from django.core import serializers
+from django.contrib.auth.models import User
 
-@login_required
+
+
 def index(request):
     names     = []
     fields = {"First Name", "Last Name", "Base", "PSIN"}
@@ -24,7 +27,7 @@ def index(request):
             bname = p.uid.bid.bname
         except:
             bname = "NULL"
-        names.append({"First Name": p.psin.fname, "Last Name": p.psin.lname, "Base": bname, "PSIN": p.psin})
+        names.append({"First Name": p.psin.fname, "Last Name": p.psin.lname, "Base": bname, "PSIN": p.psin.sin})
 
     return render(request, 'index.html', {'data': names, 'fields': fields})
 
@@ -32,38 +35,38 @@ def index(request):
 def personnelDetail(request, personnel_sin):
     try:
         personnel = Personnel.objects.get(pk=personnel_sin)
+        weapons   = AuthorizedToUse.objects.distinct().filter(psin=personnel_sin)
     except Personnel.DoesNotExist:
-        raise Http404("Question does not exist")
-    return render(request, 'personnel/detail.html', {'personnel': personnel})
+        raise Http404("Personnel does not exist")
+    return render(request, 'personnel/detail.html', {'personnel': personnel, 'weapons': weapons})
 
-def login_user(request):
-    c = {}
-    c.update(csrf(request))
-    state = "Please log in below..."
-    username = password = ''
-    if request.POST:
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+# def login_user(request):
+#     state = "Please log in below..."
+#     username = password = ''
+#     if request.POST:
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
 
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                if request.GET.get('next', False):
-                    return HttpResponseRedirect(request.GET.get('next'))
-                else:
-                    return HttpResponseRedirect('/login/')
-            else:
-                state = "Your account is not active, please contact the site admin."
-        else:
-            state = "Your username and/or password were incorrect."
+#         user = authenticate(username=username, password=password)
+#         if user is not None:
+#             if user.is_active:
+#                 login(request, user)
+#                 if request.GET.get('next', False):
+#                     return HttpResponseRedirect(request.GET.get('next'))
+#                 else:
+#                     return HttpResponseRedirect('/login/')
+#             else:
+#                 state = "Your account is not active, please contact the site admin."
+#         else:
+#             state = "Your username and/or password were incorrect."
 
-    return render(request, 'auth.html', {'state':state, 'username': username})
+#     return render(request, 'auth.html', {'state':state, 'username': username})
 
 
 def searchResults(request):
-
-    return render(request, 'searchResults.html', {})
+    print "TEST SEARCH"
+    personnelDetail(request, request.GET.get('q'))
+    # return render(request, 'searchResults.html', {})
     names     = []
     fields = {"First Name", "Last Name", "Base"}
     for p in Personnel.objects.all().order_by('psin__fname'):
@@ -78,3 +81,23 @@ def searchResults(request):
         'fields'    : fields,
     })
     return TemplateResponse(request, 'index.html', context_instance)
+
+def register_page(request):
+    c = {}
+    error = ""
+    c.update(csrf(request))
+    print "TEST"
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        print "TEST2"
+        if form.is_valid():
+            print "Registered" + form.cleaned_data['username']
+            user = User.objects.create_user(
+                                            username=form.cleaned_data['username'],
+                                            password=form.cleaned_data['password1'],
+                                            )
+            return HttpResponseRedirect('/simpleMilitary/')
+    else:
+        form = RegistrationForm()
+        error = "Invalid registration form"
+    return render(request, 'register.html', {"form": form, "Error": error})

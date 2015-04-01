@@ -1,13 +1,75 @@
-<h1>{{ personnel.psin.fname }}</h1>
-<ul>
-{% if request.user.username != personnel.psin %}
-{{"ERROR you are:" }}
-{{ request.user.username }}
-{{"not" }}
-{{personnel.psin.sin}}
-{% else %}
-{{ personnel }}
-{% endif %}
-</ul>
+{% load staticfiles %}
 
+{% load extratags %}
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-responsive.min.css"/>
+<script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
+
+{% if request.user.username != personnel.psin.sin %}
+<html class="error-page">
+    <head>
+        <title>403 {{request.user.username }} not authorized </title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="container text-center" style="padding-top: 50px">
+            <div class="">
+                <div class="text-danger" ><h3>Oops, you shouldn't be here</h3>
+                    <div class="text-center">
+                        <big><p style="font-size: 70px">403</p>
+                        <h1 class="without-margin"><span class="text-muted"><medium></medium></h1>
+                        <h4 class="text-muted">{{request.user.username }} is not authorized</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+{% else %}
+
+<div class="container centering text-center" style="padding-top: 50px">
+    <div class="panel panel-primary">
+        <div class="panel-heading" ><h3>Welcome, {{ personnel.psin.fname }} {{ personnel.psin.lname }}</h3></div>
+        <div class="row" style="margin: 10px">
+            <!-- <div class="col-md-1" style="padding-top: 20px"></div> -->
+            <div class="col-md-6" style="padding-top: 20px">
+                <div class="panel panel-info" style="">
+                    <div class="panel-heading"> Personal Information </div>
+                    <table class="table table-bordered " style="padding 10px">
+                        <thead>
+                            <tr><th>Base</th><td>{{ personnel.uid.bid.bname }}</td></tr>
+                            <tr><th>Unit</th><td>{{ personnel.uid.uname }}</td></tr>
+                            <tr><th>SIN</th><td>{{ personnel.psin.sin }}</td></tr>
+                            <tr><th>Address</th><td>{{ personnel.psin.address }}</td></tr>
+                            <tr><th>Enlisted on</th><td>{{ personnel.psin.enlist_date }}</td></tr>
+                            <tr><th>Birthday</th><td>{{ personnel.psin.bdate }}</td></tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6" style="padding-top: 20px">
+                <div class="panel panel-info" >
+                    <div class="panel-heading"> Authorized to use</div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                            </tr>
+                            {% for weapon in weapons %}
+                            <tr>
+                                <td> {{ weapon.serialno.ename }}</td>
+                                <td> {{ weapon.serialno.type }}</td>
+                            </tr>
+                            {% endfor %}
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <!-- <div class="col-md-1" style="padding-top: 20px"></div> -->
+        </div>
+    </div>
+</div>
+{% endif %}
 
