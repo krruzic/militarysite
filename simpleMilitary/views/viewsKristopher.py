@@ -1,13 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from simpleMilitary.models import Personnel
+from simpleMilitary.models import AuthorizedToUse
 from simpleMilitary.forms import RegistrationForm
 from django.http import Http404
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.core.context_processors import csrf
-
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 
 
@@ -15,9 +16,10 @@ from django.contrib.auth.models import User
 def personnelDetail(request, personnel_sin):
     try:
         personnel = Personnel.objects.get(pk=personnel_sin)
+        weapons = AuthorizedToUse.objects.filter(psin=personnel_sin)
     except Personnel.DoesNotExist:
-        raise Http404("Question does not exist")
-    return render(request, 'personnel/detail.html', {'personnel': personnel})
+        raise Http404("No such personnel")
+    return render(request, 'personnel/detail.html', {'personnel': personnel, 'weapons': weapons})
 
 def login_user(request):
     c = {}
@@ -47,18 +49,40 @@ def register_page(request):
     c = {}
     error = ""
     c.update(csrf(request))
-    print "TEST"
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
-        print "TEST2"
         if form.is_valid():
+            isStaff = 0
             print "Registered" + form.cleaned_data['username']
+            personnel = Personnel.objects.get(pk=form.cleaned_data['username'])
+            if (personnel.rank == 'General'):
+                isStaff = 1
             user = User.objects.create_user(
                                             username=form.cleaned_data['username'],
                                             password=form.cleaned_data['password1'],
+                                            is_staff=isStaff
                                             )
             return HttpResponseRedirect('/simpleMilitary/')
     else:
         form = RegistrationForm()
         error = "Invalid registration form"
     return render(request, 'register.html', {"form": form, "Error": error})
+
+@login_required
+@csrf_exempt
+def admin_operations(request):
+    if request.user.is_superuser:
+        print "Administrator!"
+    post_text = "SADF"
+    if request.method == 'POST':
+        post_text = "YA"
+    print post_text
+    # if(request.GET.get('my-btn')):
+    #     print "Button pressed!!"
+        # mypythoncode.mypythonfunction( int(request.GET.get('mytextbox')) )
+    # try:
+    #     personnels = Personnel.objects.all().values()
+    #     weapons = AuthorizedToUse.objects.filter(psin=personnel_sin)
+    # except Personnel.DoesNotExist:
+    #     raise Http404("No such personnel")
+    return render(request, 'adminOps.html', {})

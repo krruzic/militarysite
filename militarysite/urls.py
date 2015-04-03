@@ -5,7 +5,7 @@ from django.contrib import admin
 from simpleMilitary import views
 
 urlpatterns = patterns('',
-    url(r'^simpleMilitary/', include('simpleMilitary.urls')),
+    url(r'^simpleMilitary/', include('simpleMilitary.urls', namespace="simpleMilitary")),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'admin/login.html'}),
     url('^accounts/', include('django.contrib.auth.urls')),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),

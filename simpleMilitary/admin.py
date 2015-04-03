@@ -14,6 +14,11 @@ class PersonnelAdmin(admin.ModelAdmin):
     def personnel_updated(self, request, queryset):
         self.message_user(request, "Personnel successfully updated!")
 
+    class Media:
+        js = ("/static/js/hide_myfield_info.js",)
+
+    # print submit_buttons_top
 
 admin.site.register(Person)
 admin.site.register(Personnel, PersonnelAdmin)
+admin.site.register(Unit)
