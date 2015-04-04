@@ -55,6 +55,12 @@
   z-index:10;
   position:relative;
 }
+.detail-table {
+    table-layout: fixed;
+    word-wrap: break-word;
+    overflow-x: auto;
+}
+
 
 </style>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -71,7 +77,7 @@
       <div class="col-md-6">
         <div class="panel panel-info" style="margin: 20px">
           <div class="panel-heading"> Personal Information </div>
-          <table class="table table-bordered" style="white-space: normal;" >
+          <table class="table table-bordered table-responsive detail-table" style="white-space: normal;" >
             <thead>
               <tr><th>Base</th><td>{{ personnel.uid.bid.bname }}</td></tr>
               <tr><th>Unit</th><td>{{ personnel.uid.uname }}</td></tr>
@@ -86,7 +92,7 @@
       <div class="col-md-6">
         <div class="panel panel-info"  style="margin: 20px">
           <div class="panel-heading"> Authorized to use</div>
-          <table class="table table-bordered">
+          <table class="table table-bordered table-responsive detail-table">
             <thead>
               <tr>
                 <th>Name</th>

@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 def personnelDetail(request, personnel_sin):
     try:
         personnel = Personnel.objects.get(pk=personnel_sin)
-        weapons = AuthorizedToUse.objects.filter(psin=personnel_sin)
+        weapons = AuthorizedToUse.objects.distinct().filter(psin=personnel_sin)
     except Personnel.DoesNotExist:
         raise Http404("No such personnel")
     return render(request, 'personnel/detail.html', {'personnel': personnel, 'weapons': weapons})
