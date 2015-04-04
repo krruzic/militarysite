@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-responsive.min.css"/>
 <script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
 
-{% if request.user.username != personnel.psin.sin %}
+{% if request.user.username != personnel.psin.sin and not request.user.is_staff%}
 <html class="error-page">
     <head>
         <title>403 {{request.user.username }} not authorized </title>
