@@ -5,3 +5,5 @@ Just setting things up.
 Do NOT just add to the master branch, start your own, with a well defined feature in mind. Name it username-feature
 
 Thanks!
+
+Deployed on heroku at militarysite.herokuapp.com/simpleMilitary/
