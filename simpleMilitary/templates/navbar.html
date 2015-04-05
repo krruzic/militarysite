@@ -17,7 +17,6 @@
       <a class="navbar-brand" href="/simpleMilitary/" id="home">The Canadian Military</a>
     </div>
     <div class="divider"></div>
-    <p class="navbar-text">Welcome, {{ properties.username }} </p>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li class="active" id="userpage"><a href="#">Information for {{ properties.personnel }}<span class="sr-only">(current)</span></a></li>
@@ -46,6 +45,18 @@
   </div>
 </nav>
 <!--
+The input properties dict will look like this:
+    properties = {
+        'username': request.user.username,
+        'super': request.user.is_superuser, # boolean
+        'searchable': False,
+        'active_page': 'Information for ' + pname, # set this as the TEXT the navbar element displays
+        'logged_in': True,
+        'personnel': pname # text to display on the View Personnel information tab
+    }
+
+We need to add these features (this is the only file that needs modifying:
+
 Show personnel information tab if logged in ----|
 Show admin dropdown if superuser ---------------|
                                                 |
@@ -58,4 +69,10 @@ Show logout if login is true
 Hide logout if login is false
 
 Show 'Account' instead of username if not logged in
+
+To do all of this, use Django template tags (you'll probably only need {% if blah %})
+and maybe some jquery:
+  use it to select the element with active_page as text, then set class="active"
+
+You might not need jquery at all...
  -->
