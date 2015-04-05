@@ -1,0 +1,61 @@
+{% load staticfiles %}
+
+{% load extratags %}
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
+<script type="text/javascript" src={% static '/static/js/jquery-2.1.3.min.js' %}></script>
+<script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/simpleMilitary/" id="home">The Canadian Military</a>
+    </div>
+    <div class="divider"></div>
+    <p class="navbar-text">Welcome, {{ properties.username }} </p>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active" id="userpage"><a href="#">Information for {{ properties.personnel }}<span class="sr-only">(current)</span></a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Administration <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/admin/">Admin Panel</a></li>
+            <li><a href="/simpleMilitary/adminOperations">Admin Operations</a></li>
+            <li class="divider"></li>
+            <li><a href="/simpleMilitary/personnel/all">Personnel Information</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ properties.username }} <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/accounts/logout/">Logout</a></li>
+            <li><a href="/accounts/register/">Register</a></li>
+            <li class="divider"></li>
+            <li><a href="/accounts/login/">Login</a></li>
+          </ul>
+        </li>
+        </ul>
+    </div>
+  </div>
+</nav>
+<!--
+Show personnel information tab if logged in ----|
+Show admin dropdown if superuser ---------------|
+                                                |
+                                  These may or may not be exclusive
+
+Show active page (login, register, home, user information, admin operations)
+Show search bar (only on home)
+Hide login and register if login is true
+Show logout if login is true
+Hide logout if login is false
+
+Show 'Account' instead of username if not logged in
+ -->

@@ -6,8 +6,9 @@ from simpleMilitary import views
 
 urlpatterns = patterns('',
     url(r'^simpleMilitary/', include('simpleMilitary.urls', namespace="simpleMilitary")),
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'admin/login.html'}),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url('^accounts/', include('django.contrib.auth.urls')),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'accounts/register', views.register_page),
 )

@@ -35,8 +35,6 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -49,6 +47,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'simpleMilitary',
+    'bootstrap3',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -65,7 +64,7 @@ ROOT_URLCONF = 'militarysite.urls'
 
 WSGI_APPLICATION = 'militarysite.wsgi.application'
 LOGIN_URL = '/accounts/login/'
-
+LOGIN_REDIRECT_URL = '/simpleMilitary/'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 # Do not push the ssl cert files to git!
