@@ -1,6 +1,45 @@
 {% load staticfiles %}
 
 {% load extratags %}
+
+<script>
+$("#home").click(function() {
+  $("search").show();
+};
+</script>
+
+{% if properties.super == true %}
+<script>
+$("#admin").show();
+</script>
+
+{% else %}
+<script>
+$("#admin").hide();
+</script>
+{% endif %}
+
+{% if properties.logged_in == true %}
+<script>
+$("#userpage").show();
+$("#login").hide();
+$("#register").hide();
+$("#logout").show();
+$("#username").show();
+$("#account").hide();
+</script>
+
+{% else %}
+<script>
+$("#userpage").hide();
+$("#login").show();
+$("#register").show();
+$("#logout").hide();
+$("#username").hide();
+$("#account").show();
+</script>
+{% endif %}
+
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
 <script type="text/javascript" src={% static '/static/js/jquery-2.1.3.min.js' %}></script>
 <script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
@@ -22,7 +61,7 @@
         <li class="active" id="userpage"><a href="#">Information for {{ properties.personnel }}<span class="sr-only">(current)</span></a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
+        <li class="dropdown" id="admin">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Administration <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="/admin/">Admin Panel</a></li>
@@ -32,47 +71,16 @@
           </ul>
         </li>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ properties.username }} <span class="caret"></span></a>
+          <a href="#" id="username" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ properties.username }} <span class="caret"></span></a>
+          <a href="#" id="account" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/accounts/logout/">Logout</a></li>
-            <li><a href="/accounts/register/">Register</a></li>
+            <li id="logout"><a href="/accounts/logout/">Logout</a></li>
+            <li id="register"><a href="/accounts/register/">Register</a></li>
             <li class="divider"></li>
-            <li><a href="/accounts/login/">Login</a></li>
+            <li id="login"><a href="/accounts/login/">Login</a></li>
           </ul>
         </li>
         </ul>
     </div>
   </div>
 </nav>
-<!--
-The input properties dict will look like this:
-    properties = {
-        'username': request.user.username,
-        'super': request.user.is_superuser, # boolean
-        'searchable': False,
-        'active_page': 'Information for ' + pname, # set this as the TEXT the navbar element displays
-        'logged_in': True,
-        'personnel': pname # text to display on the View Personnel information tab
-    }
-
-We need to add these features (this is the only file that needs modifying:
-
-Show personnel information tab if logged in ____|
-Show admin dropdown if superuser _______________|
-                                                |
-                                  These may or may not be exclusive
-
-Show active page (login, register, home, user information, admin operations)
-Show search bar (only on home)
-Hide login and register if login is true
-Show logout if login is true
-Hide logout if login is false
-
-Show 'Account' instead of username if not logged in
-
-To do all of this, use Django template tags (you'll probably only need {# if blah #})
-and maybe some jquery:
-  use it to select the element with active_page as text, then set class="active"
-
-You might not need jquery at all...
- -->
