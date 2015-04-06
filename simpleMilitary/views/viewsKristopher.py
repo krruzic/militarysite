@@ -103,11 +103,5 @@ def admin_operations(request):
 def all_personnel(request):
     if not request.user.is_superuser:
         print "Not superuser, don't show this page"
-    users = []
-    for p in Personnel.objects.all():
-        try:
-            valid_user = User.objects.get(username=p.psin.sin)
-            users.append(p)
-        except:
-            print p.psin.sin + " not registered!"
-    return render(request, 'personnel/all.html', {'users': users})
+    p = Personnel.objects.all()
+    return render(request, 'personnel/all.html', {'users': p})
