@@ -10,6 +10,13 @@ from django.db.models import Q
 
 
 def index(request):
+    properties = {
+        'username': request.user.username,
+        'super': request.user.is_superuser,
+        'active_page': 'home', # set this as the TEXT the navbar displays
+        'logged_in': request.user.is_authenticated(),
+        'personnel': ''
+    }
     pnames     = []
     pfields = {"First Name", "Last Name", "Base"}
     new_recruits = {Personnel.objects.filter(status='New Recruit').count()}
@@ -28,8 +35,6 @@ def index(request):
       ave_age = {str(int(round(row[0])))}
     else:
       ave_age = {0}
-    print 'hi'
-    print ave_age
     for p in Personnel.objects.all().order_by('psin__fname'):
         try:
             bname = p.uid.bid.bname
@@ -40,9 +45,12 @@ def index(request):
     vfields = {"First Name", "Last Name", "End Date"}
     for p in Veteran.objects.all().order_by('vsin__fname'):
         vnames.append({"First Name": p.vsin.fname, "Last Name": p.vsin.lname, "End Date": p.end_date})
-    return render(request, 'index.html', {'pdata': pnames, 'pfields': pfields, 'vdata': vnames, 'vfields': vfields, 'new_recruits': new_recruits, 'conflicts': conflicts, 'active_duty': active_duty, 'per_unit': per_unit, 'ave_age': ave_age})
+    return render(request, 'index.html',
+        {'pdata': pnames, 'pfields': pfields, 'vdata': vnames, 'vfields': vfields,
+         'new_recruits': new_recruits, 'conflicts': conflicts, 'active_duty': active_duty,
+         'per_unit': per_unit, 'ave_age': ave_age, 'properties': properties})
 
-    return render(request, 'index.html', {'data': names, 'fields': fields})
+    # return render(request, 'index.html', {'data': names, 'fields': fields, 'properties': properties})
 
 def searchResults(request):
     results = request.GET.get('q')

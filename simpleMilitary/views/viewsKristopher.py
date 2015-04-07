@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponseForbidden
 from simpleMilitary.models import Personnel
 from simpleMilitary.models import AuthorizedToUse
+from simpleMilitary.models import AwardedTo
 from simpleMilitary.forms import RegistrationForm
 from django.http import Http404
 from django.shortcuts import render
@@ -20,18 +21,18 @@ def personnelDetail(request, personnel_sin):
     try:
         personnel = Personnel.objects.get(pk=personnel_sin)
         weapons = AuthorizedToUse.objects.distinct().filter(psin=personnel_sin)
+        awards = AwardedTo.objects.distinct().filter(sin=personnel_sin)
     except Personnel.DoesNotExist:
         raise Http404("No such personnel")
     pname = personnel.psin.fname + " " + personnel.psin.lname
     properties = {
         'username': request.user.username,
         'super': request.user.is_superuser,
-        'searchable': False,
-        'active_page': 'Information for ' + pname, # set this as the TEXT the navbar displays
+        'active_page': 'personnel details', # set this as the TEXT the navbar displays
         'logged_in': True,
         'personnel': pname
     }
-    return render(request, 'personnel/detail.html', {'personnel': personnel, 'weapons': weapons, 'properties': properties})
+    return render(request, 'personnel/detail.html', {'personnel': personnel, 'weapons': weapons, 'awards': awards, 'properties': properties})
 
 def login_user(request):
     c = {}
