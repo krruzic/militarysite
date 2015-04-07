@@ -23,7 +23,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.auth.context_processors.auth'
 )
-
+DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -34,8 +34,6 @@ SECRET_KEY = '1*9#0oy6&muomb$%p6tmuaip&t4fo1t8h-fa1tix!5-y*ucc8l'
 DEBUG = True
 
 TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -49,6 +47,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'simpleMilitary',
+    'bootstrap3',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -65,7 +64,7 @@ ROOT_URLCONF = 'militarysite.urls'
 
 WSGI_APPLICATION = 'militarysite.wsgi.application'
 LOGIN_URL = '/accounts/login/'
-
+LOGIN_REDIRECT_URL = '/simpleMilitary/'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 # Do not push the ssl cert files to git!

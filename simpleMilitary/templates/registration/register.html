@@ -10,7 +10,8 @@
             <div class="row" style="margin: 15px">
                 <form role="form" method="POST" action="">
                     {% csrf_token %}
-                    <div class="col-lg-6 centering">
+                    <div class="col-md-3 "></div>
+                    <div class="col-md-6 ">
                         <div class="form-group">
                             <label for="username">SIN</label>
                             <div class="input-group">
@@ -27,12 +28,13 @@
                         </div>
                         <div class="form-group">
                             <label for="InputEmail">Confirm Password</label>
-                            <div class="input-group">
+                            <div class="input-group" style="margin-bottom: 10px">
                                 <input type="password" class="form-control" id="password2" name="password2" placeholder="Password (again)" required>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span>   Required</span>
                             </div>
+                            <input type="submit" name="submit" id="submit" value="Register" class="btn btn-primary centering">
                         </div>
-                        <input type="submit" name="submit" id="submit" value="Register" class="btn btn-primary pull-center">
+                    <div class="col-md-3 "></div>
                     </div>
                 </form>
             </div>
