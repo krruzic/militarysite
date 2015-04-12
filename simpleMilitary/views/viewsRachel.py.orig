@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 from django.shortcuts import render
 from django.template import RequestContext
 from simpleMilitary.models import Personnel
@@ -73,3 +75,4 @@ def searchResults(request):
         'vfields'    : vfields,
     })
     return render(request, 'index.html', {'pdata': pnames, 'pfields': pfields, 'vdata': vnames, 'vfields': vfields})
+>>>>>>> fbca6c531d39827cfe3bf1f4c6909eeab901e2c3

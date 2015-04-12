@@ -1,0 +1,111 @@
+{% load staticfiles %}
+
+{% load extratags %}
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
+<script type="text/javascript" src={% static '/static/js/jquery-2.1.3.min.js' %}></script>
+<script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#admin").hide();
+  $("#search").hide();
+  $("#userpage").hide();
+  $("#username").hide();
+});
+</script>
+
+
+{% if properties.active_page == 'home' %}
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#search").show();
+});
+</script>
+{% endif %}
+
+{% if properties.super %}
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#admin").show();
+});
+</script>
+{% endif %}
+
+{% if properties.logged_in %}
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#logout").show();
+  $("#username").show();
+  $("#account").hide();
+  $("#login").hide();
+  $("#register").hide();
+  $("#divider").hide();
+});
+</script>
+
+{% if properties.active_page == 'personnel details' %}
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#userpage").show();
+});
+</script>
+{% endif %}
+
+{% else %}
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#account").show();
+  $("#login").show();
+  $("#register").show();
+  $("#userpage").hide();
+  $("#logout").hide();
+});
+</script>
+{% endif %}
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/simpleMilitary/" id="home">The Canadian Military</a>
+    </div>
+    <div class="divider"></div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active" id="userpage"><a href="#">Information for {{ properties.personnel }}<span class="sr-only">(current)</span></a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown" id="admin">
+          <a id="admin" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Administration <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/admin/">Admin Panel</a></li>
+            <li><a href="/simpleMilitary/adminOperations">Admin Operations</a></li>
+            <li lass="divider"></li>
+            <li><a href="/simpleMilitary/personnel/all">Personnel Information</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" id="username" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ properties.username }} <span class="caret"></span></a>
+          <a href="#" id="account" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li id="logout"><a href="/accounts/logout/">Logout</a></li>
+            <li id="register"><a href="/accounts/register/">Register</a></li>
+            <li id="divider" class="divider"></li>
+            <li id="login"><a href="/accounts/login/">Login</a></li>
+          </ul>
+        </li>
+        </ul>
+      <form id="search" class="navbar-form navbar-right" role="search"  method="get" action="/simpleMilitary/searchResults/">
+        <div class="form-group">
+          <input type="text submit" class="form-control" name="q" placeholder="Search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>

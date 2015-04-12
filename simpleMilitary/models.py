@@ -125,6 +125,8 @@ class Personnel(models.Model):
     supersin = models.ForeignKey('self', db_column='SUPERSIN', blank=True, null=True, verbose_name='Supervisor')  # Field name made lowercase.
 
     class Meta:
+        verbose_name = 'Personnel'
+        verbose_name_plural = 'Personnel'
         db_table = 'PERSONNEL'
 
     def __unicode__(self):
