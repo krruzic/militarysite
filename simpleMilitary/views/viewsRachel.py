@@ -13,7 +13,7 @@ def index(request):
     properties = {
         'username': request.user.username,
         'super': request.user.is_superuser,
-        'active_page': 'home', # set this as the TEXT the navbar displays
+        'active_page': 'Home', # set this as the TEXT the navbar displays
         'logged_in': request.user.is_authenticated(),
         'personnel': ''
     }
@@ -53,6 +53,13 @@ def index(request):
     # return render(request, 'index.html', {'data': names, 'fields': fields, 'properties': properties})
 
 def searchResults(request):
+    properties = {
+        'username': request.user.username,
+        'super': request.user.is_superuser,
+        'active_page': 'Search Results', # set this as the TEXT the navbar displays
+        'logged_in': request.user.is_authenticated(),
+        'personnel': ''
+    }
     results = request.GET.get('q')
     pnames     = []
     vnames     = []
@@ -72,4 +79,4 @@ def searchResults(request):
         'vdata'      : vnames,
         'vfields'    : vfields,
     })
-    return render(request, 'index.html', {'pdata': pnames, 'pfields': pfields, 'vdata': vnames, 'vfields': vfields})
+    return render(request, 'index.html', {'pdata': pnames, 'pfields': pfields, 'vdata': vnames, 'vfields': vfields, 'properties': properties})
