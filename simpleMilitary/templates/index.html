@@ -1,122 +1,4 @@
-
 {% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
-<!-- <script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script> -->
-
-<!DOCTYPE html>
-<style type="text/css">
-.background {
-  /* css needed to scale image that fills background
-     reuse this
-  */
-    /* Set rules to fill background */
-  min-height: 100%;
-  min-width: 1024px;
-  height: auto;
-  overflow: hidden;
-  /* Set up proportionate scaling */
-  width: 100%;
-  height: auto;
-  position: fixed;
-  background: url("/static/imgs/hero_tank.jpg") no-repeat center center fixed;
-  -webkit-filter: blur(5px);
-  filter: blur(5px);
-  z-index:0;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
-.content{
-  z-index:10;
-  position:relative;
-}
-.detail-table {
-    table-layout: fixed;
-    word-wrap: break-word;
-    overflow: auto;
-}
-
-
-table.my-class {background-color: #eee;}
-</style>
-{% load extratags %}
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<title>The Canadian Military </title>
-
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<div class="background"></div>
-<div class="text-center content">
-{% include "navbar.html" with properties=properties%}
-  <div class="container">
-<br>
-<br>
-<h2>&nbsp  Personnel</h2>
-    {% if pdata %}
-<table class="table table-bordered my-class">
-    <thead>
-        <tr>
-            {% for field in pfields %}
-                <th>
-                {{ field }}
-                </th>
-            {% endfor %}
-        </tr>
-    <br>
-    </thead>
-    <tbody>
-            {% for d in pdata %}
-                <tr>
-                    {% for field in pfields %}
-                        <td> {% get_value_from_key d field %}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-    </tbody>
-</table>
-    {% else %}
-        &nbsp&nbsp&nbsp No search results found in our veteran records
-    {% endif %}
-
-{% load extratags %}
-<br>
-<h2>&nbsp Veterans</h2>
-    {% if vdata %}
-<table class="table table-bordered my-class">
-    <thead>
-        <tr>
-            {% for field in vfields %}
-                <th>
-                {{ field }}
-                </th>
-            {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-            {% for d in vdata %}
-                <tr>
-                    {% for field in vfields %}
-                        <td> {% get_value_from_key d field %}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-    </tbody>
-</table>
-    {% else %}
-        &nbsp&nbsp&nbsp No search results found in our veteran records
-    {% endif %}
-
-<br>
-<br>
-<h2>&nbsp  Statistics</h2>
-<br>
-{% for number in new_recruits %}
-    {% if number == 1 %}
-    <p>&nbsp&nbsp&nbsp We currently have {{ number }} new recruit</p>
-    {% else %}
-    <p>&nbsp&nbsp&nbsp We curre{% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
 <script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
 
@@ -133,7 +15,7 @@ table.my-class {background-color: #eee;}
   overflow: hidden;
   /* Set up proportionate scaling */
   width: 100%;
-  height: auto;
+  /*height: auto;*/
   position: fixed;
   background: url("/static/imgs/hero_tank.jpg") no-repeat center center fixed;
   -webkit-filter: blur(5px);
@@ -234,36 +116,6 @@ table.my-class {background-color: #eee;}
     <p>&nbsp&nbsp&nbsp We currently have {{ number }} new recruit</p>
     {% else %}
     <p>&nbsp&nbsp&nbsp We currently have {{ number }} new recruits</p>
-    {% endif %}
-{% endfor %}
-{% for number in ave_age %}
-        <p>&nbsp&nbsp&nbsp The average age of our personnel is {{ number }}</p>
-{% endfor %}
-{% for number in conflicts %}
-    {% if number == 1 %}
-        <p>&nbsp&nbsp&nbsp We are involved in {{ number }} conflict</p>
-    {% else %}
-        <p>&nbsp&nbsp&nbsp We are involved in {{ number }} conflicts</p>
-    {% endif %}
-{% endfor %}
-{% for number in active_duty %}
-    {% if number == 1 %}
-        <p>&nbsp&nbsp&nbsp {{ number }} of our personnel is on active duty</p>
-    {% else %}
-        <p>&nbsp&nbsp&nbsp {{ number }} of our personel are on active duty</p>
-    {% endif %}
-{% endfor %}
-{% for number in per_unit %}
-    {% if number == 1 %}
-        <p>&nbsp&nbsp&nbsp On average, there is {{ number }} member per unit</p>
-    {% else %}
-        <p>&nbsp&nbsp&nbsp On average, there are {{ number }} members per unit</p>
-    {% endif %}
-{% endfor %}
-<br>
-<br>
-</div>
-</div>ntly have {{ number }} new recruits</p>
     {% endif %}
 {% endfor %}
 {% for number in ave_age %}
