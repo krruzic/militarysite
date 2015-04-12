@@ -79,4 +79,4 @@ def searchResults(request):
         'vdata'      : vnames,
         'vfields'    : vfields,
     })
-    return render(request, 'index.html', {'pdata': pnames, 'pfields': pfields, 'vdata': vnames, 'vfields': vfields, 'properties': properties})
+    return render(request, 'index.html', {'pdata': pnames, 'pfields': pfields, 'vdata': vnames, 'vfields': vfields})
