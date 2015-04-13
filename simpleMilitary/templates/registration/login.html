@@ -1,9 +1,8 @@
 {% load staticfiles %}
-{% load i18n admin_static bootstrapped_goodies_tags extratags %}
 
 
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
-<!-- <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-responsive.min.css"/> -->
+<script type="text/javascript" src={% static '/static/js/jquery-2.1.3.min.js' %}></script>
 <script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
 <style type="text/css">
 @media (min-width: 768px) {
@@ -47,109 +46,34 @@ body {
     background-color: #FFF;
 }
 </style>
-
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" >
 <head>
-    <title>Django administration | Django site admin</title>
+    <title>Login to the Canadian Military</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
-<body>
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12"></div>
-    </div>
-    <div id="content" class="colM">
-      <div id="content-main">
-        <form class="form-signin" action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
-          <div class="form-signin-inner">
-          {% blocktrans %}<h2>Login</h2>{% endblocktrans %}
-          {% if form.errors and not form.non_field_errors and not form.this_is_the_login_form.errors %}
-            <div class="alert alert-danger">
-               {% blocktrans count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
-            </div>
-          {% endif %}
-          {% if form.non_field_errors or form.this_is_the_login_form.errors %}
-            {% for error in form.non_field_errors|add:form.this_is_the_login_form.errors %}
-            <div class="alert alert-danger">
-              {{ error }}
-            </div>
-            {% endfor %}
-          {% endif %}
-          <div class="form-group">
-            <label for="id_username" class="required">{% trans form.username.label %}</label>
-            {% if not form.this_is_the_login_form.errors %}<p class="text-danger">{{ form.username.errors|striptags }}</p>{% endif %}
-            {% dab_field_rendering form.username %}
-          </div>
-          <div class="form-group">
-            <label for="id_password" class="required">{% trans form.password.label %}</label>
-            {% if not form.this_is_the_login_form.errors %}<p class="text-danger">{{ form.password.errors|striptags }}</p>{% endif %}
-            {% dab_field_rendering form.password %}
-            <input type="hidden" name="this_is_the_login_form" value="1" />
-            <input type="hidden" name="next" value="{{ next }}" />
-          </div>
-          {% url 'admin_password_reset' as password_reset_url %}
-          {% if password_reset_url %}
-          <div class="form-group">
-            <div class="controls col-sm-offset-2 col-sm-10">
-                <a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
-            </div>
-          </div>
-          {% endif %}
-          <div class="form-actions clearfix">
-              <input type="submit" value="{% trans 'Log in' %}" class="btn btn-lg btn-primary btn-block" />
-          </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</body>
-<!-- <div id="content-main">
-<form class="form-signin" action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
-  <div class="form-signin-inner">
-  {% blocktrans %}<h2>Login</h2>{% endblocktrans %}
-  {% if form.errors and not form.non_field_errors and not form.this_is_the_login_form.errors %}
-    <div class="alert alert-danger">
-       {% blocktrans count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
-    </div>
-  {% endif %}
-  {% if form.non_field_errors or form.this_is_the_login_form.errors %}
-    {% for error in form.non_field_errors|add:form.this_is_the_login_form.errors %}
-    <div class="alert alert-danger">
-      {{ error }}
-    </div>
-    {% endfor %}
-  {% endif %}
-  <div class="form-group">
-    <label for="id_username" class="required">{% trans form.username.label %}</label>
-    {% if not form.this_is_the_login_form.errors %}<p class="text-danger">{{ form.username.errors|striptags }}</p>{% endif %}
-    {% dab_field_rendering form.username %}
-  </div>
-  <div class="form-group">
-    <label for="id_password" class="required">{% trans form.password.label %}</label>
-    {% if not form.this_is_the_login_form.errors %}<p class="text-danger">{{ form.password.errors|striptags }}</p>{% endif %}
-    {% dab_field_rendering form.password %}
-    <input type="hidden" name="this_is_the_login_form" value="1" />
-    <input type="hidden" name="next" value="{{ next }}" />
-  </div>
-  {% url 'admin_password_reset' as password_reset_url %}
-  {% if password_reset_url %}
-  <div class="form-group">
-    <div class="controls col-sm-offset-2 col-sm-10">
-        <a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
-    </div>
-  </div>
-  {% endif %}
-  <div class="form-actions clearfix">
-      <input type="submit" value="{% trans 'Log in' %}" class="btn btn-lg btn-primary btn-block" />
-  </div>
-  </div>
-</form>
 
-<script type="text/javascript">
-$(document).ready(function() {
-  $('#id_username').attr('autocapitalize', 'off').focus();
-})
-</script>
+<div class="container content">
+  {% if state %}
+  <div class="alert alert-danger">
+    {{ state }}
+  </div>
+  {% endif %}
+  <form role="form" method="POST" action="/accounts/login/">
+      {% csrf_token %}
+      <div class="col-md-3 ">
+          <div class="form-group">
+              <label for="InputUsername">Username</label>
+              <div class="input-group">
+                  <input type="text" class="form-control" name="username" id="username" placeholder="Username or SIN">
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="InputEmail">Password</label>
+              <div class="input-group">
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+              </div>
+              <input type="submit" name="submit" id="submit" value="Login" class="btn btn-primary centering">
+          </div>
+      </div>
+  </form>
 </div>
- -->

@@ -12,3 +12,7 @@ def get_verbose_name(object):
 @register.simple_tag
 def get_value_from_key(object, key):
     return object[key]
+
+@register.simple_tag
+def is_SIN_user(object):
+    return object[0].isdigit()

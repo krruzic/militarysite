@@ -10,12 +10,17 @@ from django.db.models import Q
 
 
 def index(request):
+    SIN_user = False
+    if request.user.is_authenticated():
+        SIN_user = request.user.username[0].isdigit()
+
     properties = {
         'username': request.user.username,
         'super': request.user.is_superuser,
         'active_page': 'Home', # set this as the TEXT the navbar displays
         'logged_in': request.user.is_authenticated(),
-        'personnel': ''
+        'personnel': '',
+        'SIN_user': SIN_user
     }
     pnames     = []
     pfields = {"First Name", "Last Name", "Base"}
@@ -53,12 +58,16 @@ def index(request):
     # return render(request, 'index.html', {'data': names, 'fields': fields, 'properties': properties})
 
 def searchResults(request):
+    SIN_user = False
+    if request.user.is_authenticated():
+        SIN_user = request.user.username[0].isdigit()
     properties = {
         'username': request.user.username,
         'super': request.user.is_superuser,
         'active_page': 'Search Results', # set this as the TEXT the navbar displays
         'logged_in': request.user.is_authenticated(),
-        'personnel': ''
+        'personnel': '',
+        'SIN_user': SIN_user
     }
     results = request.GET.get('q')
     pnames     = []
