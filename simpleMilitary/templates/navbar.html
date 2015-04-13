@@ -58,14 +58,14 @@
 {% if properties.active_page == 'personnel details' %}
 <script type="text/javascript">
   $(document).ready(function(){
-    $("#activepage").children(a).first().text({{ properties.personnel }});
+    $("#activepage").children().first().text({{ properties.personnel }});
   });
 </script>
 
 {% else %}
 <script type="text/javascript">
   $(document).ready(function(){
-    $("#activepage").children(a).first().text("{{ properties.active_page }}");
+    $("#activepage").children().first().text("{{ properties.active_page }}");
   });
 </script>
 

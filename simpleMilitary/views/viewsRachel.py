@@ -65,7 +65,7 @@ def searchResults(request):
     vnames     = []
     pfields = {"First Name", "Last Name", "Base"}
     vfields = {"First Name", "Last Name", "End Date"}
-    for p in Personnel.objects.order_by('psin__fname').filter(Q(psin__fname__contains=results) | Q(psin__lname__contains=results)):
+    for p in Personnel.objects.order_by('psin__fname').filter(Q(psin__fname__icontains=results) | Q(psin__lname__icontains=results)):
         try:
             bname = p.uid.bid.bname
         except:
@@ -79,4 +79,4 @@ def searchResults(request):
         'vdata'      : vnames,
         'vfields'    : vfields,
     })
-    return render(request, 'index.html', {'pdata': pnames, 'pfields': pfields, 'vdata': vnames, 'vfields': vfields})
+    return render(request, 'index.html', {'pdata': pnames, 'pfields': pfields, 'vdata': vnames, 'vfields': vfields, 'properties': properties})

@@ -1,5 +1,6 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
+<script type="text/javascript" src={% static '/static/js/jquery-2.1.3.min.js' %}></script>
 <script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
 
 <!DOCTYPE html>
@@ -39,6 +40,14 @@
 
 table.my-class {background-color: #eee;}
 </style>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+  if (window.location.href.indexOf("search") != -1) {
+    $("#stats").hide();
+  }});
+</script>
+
 {% load extratags %}
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
@@ -109,7 +118,10 @@ table.my-class {background-color: #eee;}
 
 <br>
 <br>
-<h2>&nbsp  Statistics</h2>
+<br>
+<br>
+<div id="stats"><h2>&nbsp  Statistics</h2></div>
+
 <br>
 {% for number in new_recruits %}
     {% if number == 1 %}

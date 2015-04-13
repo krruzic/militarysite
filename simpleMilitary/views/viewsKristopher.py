@@ -102,6 +102,13 @@ def admin_operations(request):
 
 @login_required
 def all_personnel(request):
+    properties = {
+        'username': request.user.username,
+        'super': request.user.is_superuser,
+        'active_page': 'All Personnel', # set this as the TEXT the navbar displays
+        'logged_in': request.user.is_authenticated(),
+        'personnel': ''
+    }
     if not request.user.is_superuser:
         print "Not superuser, don't show this page"
     p = Personnel.objects.all()
