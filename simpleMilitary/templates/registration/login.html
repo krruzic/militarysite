@@ -4,76 +4,58 @@
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
 <script type="text/javascript" src={% static '/static/js/jquery-2.1.3.min.js' %}></script>
 <script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
-<style type="text/css">
-@media (min-width: 768px) {
-.form-signin {
-    max-width: 380px;
-    margin: 0 auto 20px;
-    background-color: #fff;
-    border: 1px solid #e5e5e5;
-    -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        border-radius: 5px;
-    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-        -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-        box-shadow: 0 1px 2px rgba(0,0,0,.05);
-}
-.form-signin-inner{
-    padding: 9px 29px 29px;
-}
-.form-signin .form-signin-heading, .form-signin .checkbox, .form-signin h2 {
-    margin-bottom: 30px;
-}
-.form-signin .form-actions{
-    margin: 0;
-}
-#id_username, #id_password{
-    display: block;
-    font-size: 16px;
-    height: 44px;
-    width: 100%;
-}
-}
-body {
-    padding-top: 60px;
-    padding-bottom: 40px;
-}
-body {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 14px;
-    line-height: 1.42857;
-    color: #333;
-    background-color: #FFF;
-}
-</style>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" >
-<head>
-    <title>Login to the Canadian Military</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-</head>
 
-<div class="container content">
-  {% if state %}
-  <div class="alert alert-danger">
-    {{ state }}
+<style type="text/css">
+
+form[role=login] {
+  color: #5d5d5d;
+  background: #f2f2f2;
+  padding: 20px;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+  form[role=login] > div {
+    margin: 10px;
+  }
+  form[role=login] #submit {
+    font-size: 14px;
+    margin: 0 10px;
+  }
+
+</style>
+<title>Login to the Canadian Military</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="utf-8">
+{% include "navbar.html" with properties=properties%}
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <section>
+        {% if state %}
+        <div class="alert alert-danger text-center">
+          {{ state }}
+        </div>
+        {% endif %}
+        <form role="login" method="POST" action="">
+          {% csrf_token %}
+            <h2  class="text-center">The Canadian Military</h2>
+              <div class="form-group">
+                  <label for="InputUsername">Username</label>
+                      <input type="text" class="form-control input" name="username" id="username" placeholder="Username or SIN">
+              </div>
+              <div class="form-group">
+                  <label for="InputEmail">Password</label>
+                      <input type="password" class="form-control input" id="password" name="password" placeholder="Password">
+              </div>
+          <input type="submit" name="submit" id="submit" value="Login" class="btn btn-primary pull-right">
+          <div>
+            <a href="/accounts/register/">Register</a>
+          </div>
+        </form>
+      </section>
+    </div>
   </div>
-  {% endif %}
-  <form role="form" method="POST" action="/accounts/login/">
-      {% csrf_token %}
-      <div class="col-md-3 ">
-          <div class="form-group">
-              <label for="InputUsername">Username</label>
-              <div class="input-group">
-                  <input type="text" class="form-control" name="username" id="username" placeholder="Username or SIN">
-              </div>
-          </div>
-          <div class="form-group">
-              <label for="InputEmail">Password</label>
-              <div class="input-group">
-                  <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-              </div>
-              <input type="submit" name="submit" id="submit" value="Login" class="btn btn-primary centering">
-          </div>
-      </div>
-  </form>
 </div>

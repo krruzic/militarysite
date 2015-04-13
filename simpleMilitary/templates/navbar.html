@@ -24,6 +24,7 @@
 </script>
 {% endif %}
 
+
 {% if properties.super %}
 <script type="text/javascript">
   $(document).ready(function(){
@@ -88,6 +89,7 @@
   });
 </script>
 {% endif %}
+
 {% if properties.active_page == 'All Personnel' %}
 <script type="text/javascript">
   $(document).ready(function(){
@@ -95,8 +97,19 @@
     $("#adminD").hide();
   });
 </script>
-
 {% endif %}
+
+
+{% if properties.hide_drops %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#admin").hide();
+    $("#account").hide();
+    $("#username").hide();
+  });
+</script>
+{% endif %}
+
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">

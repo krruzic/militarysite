@@ -16,7 +16,7 @@ def index(request):
 
     properties = {
         'username': request.user.username,
-        'super': request.user.is_superuser,
+        'super': request.user.is_staff,
         'active_page': 'Home', # set this as the TEXT the navbar displays
         'logged_in': request.user.is_authenticated(),
         'personnel': '',
@@ -63,7 +63,7 @@ def searchResults(request):
         SIN_user = request.user.username[0].isdigit()
     properties = {
         'username': request.user.username,
-        'super': request.user.is_superuser,
+        'super': request.user.is_staff,
         'active_page': 'Search Results', # set this as the TEXT the navbar displays
         'logged_in': request.user.is_authenticated(),
         'personnel': '',

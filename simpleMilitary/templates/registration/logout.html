@@ -1,0 +1,20 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
+<script type="text/javascript" src={% static '/static/js/jquery-2.1.3.min.js' %}></script>
+<script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
+
+<title>Logged out</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="utf-8">
+{% include "navbar.html" with properties=properties %}
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4 content center">
+    <h2>{{ request.user.username }} logged out successfully!</h2>
+    <p><a href="/simpleMilitary/" class="btn btn-default pull-right"> Go Home</a></p>
+    </div>
+  </div>
+</div>
