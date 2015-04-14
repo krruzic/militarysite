@@ -1,33 +1,8 @@
 {% load staticfiles %}
 
 {% load extratags %}
+{% include "navbar.html" with properties=properties%}
 
-<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
-<script type="text/javascript" src={% static '/static/js/jquery-2.1.3.min.js' %}></script>
-<script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
-
-{% if request.user.username != personnel.psin.sin and not request.user.is_staff%}
-<html class="error-page">
-  <head>
-    <title>403 {{request.user.username }} not authorized </title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-  <body>
-    <div class="container text-center" style="padding-top: 50px">
-      <div class="">
-        <div class="text-danger" ><h3>Oops, you shouldn't be here</h3>
-          <div class="text-center">
-            <big><p style="font-size: 70px">403</p>
-            <h1 class="without-margin"><span class="text-muted"><medium></medium></h1>
-            <h4 class="text-muted">{{request.user.username }} is not authorized</h4>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
-</html>
-{% else %}
 <style type="text/css">
 .background {
   /* css needed to scale image that fills background
@@ -71,7 +46,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <div class="background"></div>
 <div class="text-center content">
-{% include "navbar.html" with properties=properties%}
   <div class="container">
     <div class="panel panel-primary" style="margin: 10px">
       <div class="panel-heading"><h3>{{ personnel.psin.fname }} {{ personnel.psin.lname }}</h3></div>

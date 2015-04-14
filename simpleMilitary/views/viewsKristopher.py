@@ -17,7 +17,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout
 import json
 import datetime
-# 960869281s
+
 @login_required
 def personnelDetail(request, personnel_sin):
     SIN_user = False
@@ -139,8 +139,9 @@ def logout_user(request):
 
 
 @login_required
-@csrf_exempt
 def admin_operations(request):
+    c = {}
+    c.update(csrf(request))
     SIN_user = False
     if request.user.is_authenticated():
         SIN_user = request.user.username[0].isdigit()
@@ -183,7 +184,7 @@ def admin_operations(request):
     #     weapons = AuthorizedToUse.objects.filter(psin=personnel_sin)
     # except Personnel.DoesNotExist:
     #     raise Http404("No such personnel")
-    return render(request, 'adminOps.html', {'personnel': personnel, 'properties': properties})
+    return render(request, 'adminOps.html', {'personnel': personnel, 'properties': properties, 'c': c})
 
 @login_required
 def all_personnel(request):
