@@ -4,36 +4,37 @@
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
 <script type="text/javascript" src={% static '/static/js/jquery-2.1.3.min.js' %}></script>
 <script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
+<script src="/static/js/main.js"></script>
 {% include "navbar.html" with properties=properties%}
 
-<div class="container text-center content" style="bottom-padding: 50px">
-<!-- <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-responsive.min.css"/>
-<script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
- --><script src="/static/js/main.js"></script>
-<ul class="nav nav-tabs">
-  <li role="presentation" class="active"><a href="#">Personnel To Veterans</a></li>
-<!--   <li role="presentation"><a href="#">Operations</a></li>
- --></ul>
+<div class="container content">
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="#">Personnel To Veterans</a></li>
+        <button type="submit" id="submit-button" class="pull-right btn btn-primary">Move selected to Veterans</button>
 
-<form role="form" method="POST">
-  {% csrf_token %}
-    <table class="table table-bordered table-responsive detail-table" style="white-space: normal;" >
-      <thead>
-        <tr>
-          <th style="width: 30px"></th>
-          <th>Name</th>
-          <th>SIN</th>
-        </tr>
-        {% for p in personnel %}
-        <tr>
-          <td><div class="checkbox text-centering"><label><input type="checkbox"></label></div></td>
-          <td>{{ p.psin.fname }} {{ p.psin.lname }}</td>
-          <td>{{ p.psin.sin }}</td>
-        </tr>
-        {% endfor %}
-      </thead>
-    </table>
-  <div id="results"></div> <!-- errors go here -->
-  <input style="margin: 20px" type="submit" value="Move selected to Veterans" class="pull-right btn btn-primary">
-</form>
+      </ul>
+      <form role="form" method="POST">
+        {% csrf_token %}
+          <table class="table table-bordered table-responsive" style="white-space: normal;" >
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>SIN</th>
+                <th style="width: 30px"><span class="glyphicon glyphicon-arrow-right" style="margin:6px; display:table;"></span></th>
+              </tr>
+              {% for p in personnel %}
+              <tr>
+                <td id="fullname" class="center text-centering">{{ p.psin.fname }} {{ p.psin.lname }}</td>
+                <td id="SIN" class="center text-centering">{{ p.psin.sin }}</td>
+                <td class="center text-centering"><input name="check" style="margin:6px; display:table;" type="checkbox"></td>
+              </tr>
+              {% endfor %}
+            </thead>
+          </table>
+      </form>
+    </div>
+  </div>
 </div>

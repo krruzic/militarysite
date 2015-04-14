@@ -2,10 +2,12 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.http import HttpResponseForbidden
 from simpleMilitary.models import Personnel
+from simpleMilitary.models import Veteran
 from simpleMilitary.models import AuthorizedToUse
 from simpleMilitary.models import AwardedTo
 from simpleMilitary.forms import RegistrationForm
 from django.http import Http404
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
@@ -13,12 +15,11 @@ from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
-
+import json
+import datetime
 # 960869281s
 @login_required
 def personnelDetail(request, personnel_sin):
-    # if request.user.username != personnel_sin:
-    #     return HttpResponseForbidden()
     SIN_user = False
     if request.user.is_authenticated():
         SIN_user = request.user.username[0].isdigit()
@@ -28,6 +29,8 @@ def personnelDetail(request, personnel_sin):
         awards = AwardedTo.objects.distinct().filter(sin=personnel_sin)
     except Personnel.DoesNotExist:
         raise Http404("No such personnel")
+    if personnel.psin.sin != request.user.username and not request.user.is_staff:
+        return HttpResponseForbidden()
     pname = personnel.psin.fname + " " + personnel.psin.lname
     properties = {
         'username': request.user.username,
@@ -153,10 +156,24 @@ def admin_operations(request):
 
     if request.user.is_staff:
         print "Administrator!"
+    else:
+        return HttpResponseForbidden()
     post_text = "SADF"
-    if request.method == 'POST':
-        post_text = "YA"
-        request.POST.get('selectedPersonnel')
+    if request.is_ajax():
+        print "AJAX"
+        response_data = {}
+        response_data['people'] = []
+        print request.POST.getlist('selected[]')
+        for sin in request.POST.getlist('selected[]'):
+            p = Personnel.objects.get(pk=sin)
+            day = datetime.date.today()
+            v = Veteran(pk=p.psin, end_date=day)
+            v.save()
+            p.delete()
+        return HttpResponse(
+            json.dumps(response_data),
+            "application/json"
+        )
     print post_text
     # if(request.GET.get('my-btn')):
     #     print "Button pressed!!"
@@ -186,4 +203,3 @@ def all_personnel(request):
     p = Personnel.objects.all()
     return render(request, 'personnel/all.html', {'users': p, 'properties': properties})
 
-# def get_current_date():
