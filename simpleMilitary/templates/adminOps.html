@@ -50,6 +50,7 @@
           });
         },
         error: function() {
+            BootstrapDialog.closeAll();
             $("#result").html("Error moving personnel to Veterans!");
             $("#result").addClass("alert alert-danger");
         }

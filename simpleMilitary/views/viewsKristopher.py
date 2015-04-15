@@ -170,16 +170,20 @@ def admin_operations(request):
                 json.dumps(response_data),
                 "application/json"
             )
-
         for sin in request.POST.getlist('selected[]'):
             p = Personnel.objects.get(pk=sin)
+            print("line 1")
             response_data['people'].append(p.psin.fname + " " + p.psin.lname + ", ")
+            print("line 2")
             day = datetime.date.today()
             v = Veteran(pk=p.psin, end_date=day)
             v.save()
+            print("saved vet")
             p.delete()
-        print response_data[-1]
-        response_data[-1].replace(", ", "")
+            print("delete personnel")
+        del response_data['people'][0]
+        print response_data['people'][-1]
+        response_data['people'][-1] = response_data['people'][-1].replace(", ", "")
         return HttpResponse(
             json.dumps(response_data),
             "application/json"

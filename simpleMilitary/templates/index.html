@@ -33,8 +33,6 @@
     word-wrap: break-word;
     overflow: auto;
 }
-
-
 table.my-class {background-color: #eee;}
 </style>
 
@@ -59,7 +57,7 @@ table.my-class {background-color: #eee;}
   <div class="container">
 <br>
 <br>
-<h2>&nbsp  Personnel</h2>
+<h2 style="color: #333;">Personnel</h2>
     {% if pdata %}
 <table class="table table-bordered my-class">
     <thead>
@@ -83,12 +81,12 @@ table.my-class {background-color: #eee;}
     </tbody>
 </table>
     {% else %}
-        &nbsp&nbsp&nbsp No search results found in our veteran records
+        No search results found in our veteran records
     {% endif %}
 
 {% load extratags %}
 <br>
-<h2>&nbsp Veterans</h2>
+<h2 style="color: #333;">Veterans</h2>
     {% if vdata %}
 <table class="table table-bordered my-class">
     <thead>
@@ -111,47 +109,48 @@ table.my-class {background-color: #eee;}
     </tbody>
 </table>
     {% else %}
-        &nbsp&nbsp&nbsp No search results found in our veteran records
+        No search results found in our veteran records
     {% endif %}
 
 <br>
 <br>
 <br>
 <br>
-<div id="stats"><h2>&nbsp  Statistics</h2></div>
+<div id="stats"><h2>Statistics</h2>
 
 <br>
 {% for number in new_recruits %}
     {% if number == 1 %}
-    <p>&nbsp&nbsp&nbsp We currently have {{ number }} new recruit</p>
+    <p>We currently have {{ number }} new recruit</p>
     {% else %}
-    <p>&nbsp&nbsp&nbsp We currently have {{ number }} new recruits</p>
+    <p>We currently have {{ number }} new recruits</p>
     {% endif %}
 {% endfor %}
 {% for number in ave_age %}
-        <p>&nbsp&nbsp&nbsp The average age of our personnel is {{ number }}</p>
+        <p>The average age of our personnel is {{ number }}</p>
 {% endfor %}
 {% for number in conflicts %}
     {% if number == 1 %}
-        <p>&nbsp&nbsp&nbsp We are involved in {{ number }} conflict</p>
+        <p>We are involved in {{ number }} conflict</p>
     {% else %}
-        <p>&nbsp&nbsp&nbsp We are involved in {{ number }} conflicts</p>
+        <p>We are involved in {{ number }} conflicts</p>
     {% endif %}
 {% endfor %}
 {% for number in active_duty %}
     {% if number == 1 %}
-        <p>&nbsp&nbsp&nbsp {{ number }} of our personnel is on active duty</p>
+        <p>{{ number }} of our personnel is on active duty</p>
     {% else %}
-        <p>&nbsp&nbsp&nbsp {{ number }} of our personel are on active duty</p>
+        <p>{{ number }} of our personel are on active duty</p>
     {% endif %}
 {% endfor %}
 {% for number in per_unit %}
     {% if number == 1 %}
-        <p>&nbsp&nbsp&nbsp On average, there is {{ number }} member per unit</p>
+        <p>On average, there is {{ number }} member per unit</p>
     {% else %}
-        <p>&nbsp&nbsp&nbsp On average, there are {{ number }} members per unit</p>
+        <p>On average, there are {{ number }} members per unit</p>
     {% endif %}
 {% endfor %}
+</div>
 <br>
 <br>
 </div>
