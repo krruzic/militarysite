@@ -33,7 +33,7 @@
     word-wrap: break-word;
     overflow: auto;
 }
-table.my-class {background-color: #eee;}
+table.my-class {background-color: #FFF;}
 </style>
 
 
@@ -62,20 +62,18 @@ table.my-class {background-color: #eee;}
 <table class="table table-bordered my-class">
     <thead>
         <tr>
-            {% for field in pfields %}
-                <th>
-                {{ field }}
-                </th>
-            {% endfor %}
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Base</th>
         </tr>
     <br>
     </thead>
     <tbody>
             {% for d in pdata %}
                 <tr>
-                    {% for field in pfields %}
-                        <td> {% get_value_from_key d field %}</td>
-                    {% endfor %}
+                  <td> {% get_value_from_key d "First Name" %}</td>
+                  <td> {% get_value_from_key d "Last Name" %}</td>
+                  <td> {% get_value_from_key d "Base" %}</td>
                 </tr>
             {% endfor %}
     </tbody>
@@ -91,24 +89,22 @@ table.my-class {background-color: #eee;}
 <table class="table table-bordered my-class">
     <thead>
         <tr>
-            {% for field in vfields %}
-                <th>
-                {{ field }}
-                </th>
-            {% endfor %}
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>End Date</th>
         </tr>
+    <br>
     </thead>
     <tbody>
             {% for d in vdata %}
                 <tr>
-                    {% for field in vfields %}
-                        <td> {% get_value_from_key d field %}</td>
-                    {% endfor %}
+                  <td> {% get_value_from_key d "First Name" %}</td>
+                  <td> {% get_value_from_key d "Last Name" %}</td>
+                  <td> {% get_value_from_key d "End Date" %}</td>
                 </tr>
             {% endfor %}
     </tbody>
-</table>
-    {% else %}
+</table>    {% else %}
         No search results found in our veteran records
     {% endif %}
 
