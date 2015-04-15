@@ -80,6 +80,8 @@ class Equipment(models.Model):
     cid = models.ForeignKey(Conflict, db_column='CID', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
+        verbose_name = 'Equipment'
+        verbose_name_plural = 'Equipment'        
         db_table = 'EQUIPMENT'
 
     def __unicode__(self):
@@ -94,6 +96,8 @@ class Operations(models.Model):
     id = models.IntegerField(db_column='ID', primary_key=True)  # Field name made lowercase.
 
     class Meta:
+        verbose_name = 'Operations'
+        verbose_name_plural = 'Operations'        
         unique_together = ('cid', 'oname')
         db_table = 'OPERATIONS'
 
@@ -157,8 +161,21 @@ class Unit(models.Model):
     class Meta:
         db_table = 'UNIT'
 
-    def __unicode__(self):
-        return (self.uname)
+
+    def get_bname(self):
+        if self.bid is not None:
+            return self.bid.bname
+        else:
+            return ""
+
+    def get_cname(self):
+        if self.cid is not None:
+            return self.cid.cname
+        else:
+            return ""
+
+    get_cname.short_description = 'Conflict'  #Renames column head
+    get_bname.short_description = 'Base'  #Renames column head
 
 
 

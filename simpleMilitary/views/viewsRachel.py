@@ -65,13 +65,13 @@ def searchResults(request):
     vnames     = []
     pfields = {"First Name", "Last Name", "Base"}
     vfields = {"First Name", "Last Name", "End Date"}
-    for p in Personnel.objects.order_by('psin__fname').filter(Q(psin__fname__icontains=results) | Q(psin__lname__icontains=results)):
+    for p in Personnel.objects.order_by('psin__lname').filter(Q(psin__fname__icontains=results) | Q(psin__lname__icontains=results)):
         try:
             bname = p.uid.bid.bname
         except:
             bname = ""
         pnames.append({"First Name": p.psin.fname, "Last Name": p.psin.lname, "Base": bname})
-    for p in Veteran.objects.order_by('vsin__fname').filter(Q(vsin__fname__icontains=results) | Q(vsin__lname__icontains=results)):
+    for p in Veteran.objects.order_by('vsin__lname').filter(Q(vsin__fname__icontains=results) | Q(vsin__lname__icontains=results)):
         vnames.append({"First Name": p.vsin.fname, "Last Name": p.vsin.lname, "End Date": p.end_date})
     context_instance = RequestContext(request, {
         'pdata'      : pnames,
