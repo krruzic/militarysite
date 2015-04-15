@@ -4,7 +4,6 @@
 
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-dialog.css"/>
-<script type="text/javascript" src={% static '/static/js/bootstrap-dialog.js' %}></script>
 <style type="text/css">
 .background {
   /* css needed to scale image that fills background
@@ -41,6 +40,46 @@
 
 </style>
 
+
+<title>Admin Operations | Canadian Military</title>
+
+<div class="background"></div>
+<div class="text-center content">
+{% include "navbar.html" with properties=properties %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+    <div id="result"></div>
+      <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="#">Personnel To Veterans</a></li>
+        <button type="submit" id="submit-button" class="pull-right btn btn-primary">Move selected to Veterans</button>
+      </ul>
+      <form role="form" method="POST">
+        {% csrf_token %}
+          <table class="table table-bordered table-responsive" style="white-space: normal; background: #FFF;" >
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>SIN</th>
+                <th style="width: 30px"><span class="glyphicon glyphicon-arrow-right" style="margin:6px; display:table;"></span></th>
+              </tr>
+              {% for p in personnel %}
+              <tr>
+                <td id="fullname" class="center text-centering">{{ p.psin.fname }} {{ p.psin.lname }}</td>
+                <td id="SIN" class="center text-centering">{{ p.psin.sin }}</td>
+                <td class="center text-centering"><input name="check" style="margin:6px; display:table;" type="checkbox"></td>
+              </tr>
+              {% endfor %}
+            </thead>
+          </table>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<script type="text/javascript" src={% static '/static/js/bootstrap-dialog.js' %}></script>
 <script type="text/javascript">
   $(document).ready(function() {
     // $("#loading").hide();
@@ -91,40 +130,3 @@
     });
   });
 </script>
-<title>Admin Operations | Canadian Military</title>
-
-<div class="background"></div>
-<div class="text-center content">
-{% include "navbar.html" with properties=properties %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-    <div id="result"></div>
-      <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a href="#">Personnel To Veterans</a></li>
-        <button type="submit" id="submit-button" class="pull-right btn btn-primary">Move selected to Veterans</button>
-      </ul>
-      <form role="form" method="POST">
-        {% csrf_token %}
-          <table class="table table-bordered table-responsive" style="white-space: normal; background: #FFF;" >
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>SIN</th>
-                <th style="width: 30px"><span class="glyphicon glyphicon-arrow-right" style="margin:6px; display:table;"></span></th>
-              </tr>
-              {% for p in personnel %}
-              <tr>
-                <td id="fullname" class="center text-centering">{{ p.psin.fname }} {{ p.psin.lname }}</td>
-                <td id="SIN" class="center text-centering">{{ p.psin.sin }}</td>
-                <td class="center text-centering"><input name="check" style="margin:6px; display:table;" type="checkbox"></td>
-              </tr>
-              {% endfor %}
-            </thead>
-          </table>
-      </form>
-    </div>
-  </div>
-</div>
-</div>
