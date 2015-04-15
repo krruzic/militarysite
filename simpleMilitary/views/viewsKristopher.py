@@ -171,7 +171,7 @@ def admin_operations(request):
                 "application/json"
             )
         for sin in request.POST.getlist('selected[]'):
-            p = Personnel.objects.get(pk=sin).select_related('psin')
+            p = Personnel.objects.select_related('psin').get(pk=sin)
             print("line 1")
             response_data['people'].append(p.psin.fname + " " + p.psin.lname + " ")
             print("line 2")
