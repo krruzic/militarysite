@@ -1,12 +1,45 @@
 {% load staticfiles %}
 
 {% load extratags %}
-{% include "navbar.html" with properties=properties%}
 
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-dialog.css"/>
 <script type="text/javascript" src={% static '/static/js/bootstrap-dialog.js' %}></script>
+<style type="text/css">
+.background {
+  /* css needed to scale image that fills background
+     reuse this
+  */
+    /* Set rules to fill background */
+  min-height: 100%;
+  min-width: 1024px;
+  height: auto;
+  overflow: hidden;
+  /* Set up proportionate scaling */
+  width: 100%;
+  height: auto;
+  position: fixed;
+  background: url("/static/imgs/hero_scuba.jpg") no-repeat center center fixed;
+  -webkit-filter: blur(5px);
+  filter: blur(5px);
+  z-index:0;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.content{
+  z-index:10;
+  position:relative;
+}
+.detail-table {
+    table-layout: fixed;
+    word-wrap: break-word;
+    overflow: auto;
+}
 
+
+</style>
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -58,8 +91,12 @@
     });
   });
 </script>
+<title>Admin Operations | Canadian Military</title>
 
-<div class="container content">
+<div class="background"></div>
+<div class="text-center content">
+{% include "navbar.html" with properties=properties %}
+<div class="container">
   <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8">
@@ -70,7 +107,7 @@
       </ul>
       <form role="form" method="POST">
         {% csrf_token %}
-          <table class="table table-bordered table-responsive color: #FFF" style="white-space: normal;" >
+          <table class="table table-bordered table-responsive" style="white-space: normal; background: #FFF;" >
             <thead>
               <tr>
                 <th>Name</th>
@@ -89,4 +126,5 @@
       </form>
     </div>
   </div>
+</div>
 </div>

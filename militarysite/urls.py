@@ -1,8 +1,12 @@
+from django.contrib.auth.decorators import login_required
 from django.conf.urls import patterns, include, url
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import admin
 from simpleMilitary import views
+admin.site.login = views.login_user
+admin.site.logout = views.logout_user
+
 urlpatterns = patterns('',
     url(r'^simpleMilitary/', include('simpleMilitary.urls', namespace="simpleMilitary")),
     url(r'^accounts/login/$', views.login_user),
