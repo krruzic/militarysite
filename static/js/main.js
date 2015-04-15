@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
   $("#submit-button").click(function(){
     var people = [];
@@ -13,10 +14,14 @@ $(document).ready(function() {
     $.ajax({
       url: "/simpleMilitary/adminOperations", // the endpoint
       type: "POST", // http method
-      data: {selected: people, },
+      data: {selected: people}
       success: function(json) {
         $.each($("input[name='check']:checked"), function(){
           $(this).parent().parent().remove();
+        });
+        $.each(json, function(key, value) {
+              $("#result").html(value);
+              $("#result").addClass("alert alert-primary");
         });
       },
       error: function() {

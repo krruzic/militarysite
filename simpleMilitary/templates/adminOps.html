@@ -21,14 +21,27 @@
       $.ajax({
         url: "/simpleMilitary/adminOperations", // the endpoint
         type: "POST", // http method
-        data: {selected: people, },
+        data: {selected: people},
         success: function(json) {
           $.each($("input[name='check']:checked"), function(){
             $(this).parent().parent().remove();
           });
+          $.each(json, function(key, value) {
+            var valueS = JSON.stringify(value);
+            console.log(valueS);
+            if ( valueS == "[\"-1\"]") {
+              $("#result").html("No personnel selected to move!");
+              $("#result").addClass("alert alert-warning");
+            }
+            else {
+              $("#result").html("Moved " + value + " to Veterans");
+              $("#result").addClass("alert alert-info");
+            };
+          });
         },
         error: function() {
-          console.log("ERROR");
+            $("#result").html("Error moving personnel to Veterans!");
+            $("#result").addClass("alert alert-danger");
         }
       });
     });
@@ -39,6 +52,7 @@
   <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8">
+    <div id="result"></div>
       <ul class="nav nav-tabs">
         <li role="presentation" class="active"><a href="#">Personnel To Veterans</a></li>
         <button type="submit" id="submit-button" class="pull-right btn btn-primary">Move selected to Veterans</button>

@@ -163,27 +163,28 @@ def admin_operations(request):
     if request.is_ajax():
         print "AJAX"
         response_data = {}
-        response_data['people'] = []
+        response_data['people'] = ["-1"]
         print request.POST.getlist('selected[]')
+        if request.POST.getlist('selected[]') == []:
+            return HttpResponse(
+                json.dumps(response_data),
+                "application/json"
+            )
+
         for sin in request.POST.getlist('selected[]'):
             p = Personnel.objects.get(pk=sin)
+            response_data['people'].append(p.psin.fname + " " + p.psin.lname + ", ")
             day = datetime.date.today()
             v = Veteran(pk=p.psin, end_date=day)
             v.save()
             p.delete()
+        print response_data[-1]
+        response_data[-1].replace(", ", "")
         return HttpResponse(
             json.dumps(response_data),
             "application/json"
         )
     print post_text
-    # if(request.GET.get('my-btn')):
-    #     print "Button pressed!!"
-        # mypythoncode.mypythonfunction( int(request.GET.get('mytextbox')) )
-    # try:
-    #     personnels = Personnel.objects.all().values()
-    #     weapons = AuthorizedToUse.objects.filter(psin=personnel_sin)
-    # except Personnel.DoesNotExist:
-    #     raise Http404("No such personnel")
     return render(request, 'adminOps.html', {'personnel': personnel, 'properties': properties, 'c': c})
 
 @login_required
