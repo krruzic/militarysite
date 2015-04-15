@@ -2,42 +2,73 @@
 
 {% load extratags %}
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
-<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-responsive.min.css"/>
-<script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
-<div class="container text-center" style="padding-top: 50px">
-    <div class="panel panel-primary">
-        <div class="panel-heading" ><h3>Register your SIN to gain access to you personal information</h3></div>
-            <div class="row" style="margin: 15px">
-                <form role="form" method="POST" action="">
-                    {% csrf_token %}
-                    <div class="col-md-3 "></div>
-                    <div class="col-md-6 ">
-                        <div class="form-group">
-                            <label for="username">SIN</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="username" id="username" placeholder="Enter SIN" required>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span>   Required</span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="InputEmail">Password</label>
-                            <div class="input-group">
-                                <input type="password" class="form-control" id="password1" name="password1" placeholder="Password" required>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span>   Required</span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="InputEmail">Confirm Password</label>
-                            <div class="input-group" style="margin-bottom: 10px">
-                                <input type="password" class="form-control" id="password2" name="password2" placeholder="Password (again)" required>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span>   Required</span>
-                            </div>
-                            <input type="submit" name="submit" id="submit" value="Register" class="btn btn-primary centering">
-                        </div>
-                    <div class="col-md-3 "></div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+
+{% include "navbar.html" with properties=properties%}
+
+<style type="text/css">
+
+form[role=register] {
+  color: #5d5d5d;
+  background: #f2f2f2;
+  padding: 15px;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+  form[role=register] > div {
+/*    margin: 10px;
+*/  }
+  form[role=register] button {
+    font-size: 18px;
+    margin: 16px 0;
+  }
+</style>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Registration | Canadian Military</title>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3 "></div>
+      <div class="col-md-6">
+        <section>
+          {% if error %}
+          <div class="alert alert-danger text-center">
+            {{ error }}
+          </div>
+          {% endif %}
+
+          <form role="register" method="POST" action="">
+            {% csrf_token %}
+              <h3  class="text-center">Register your SIN to access personal records</h3>
+              <div class="form-group">
+                <label for="username">SIN</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" name="username" id="username" placeholder="Enter SIN" required>
+                  <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span>   Required</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="InputEmail">Password</label>
+                <div class="input-group">
+                  <input type="password" class="form-control" id="password1" name="password1" placeholder="Password" required>
+                  <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span>   Required</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="InputEmail">Confirm Password</label>
+                <div class="input-group">
+                  <input type="password" class="form-control" id="password2" name="password2" placeholder="Password (again)" required>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span>   Required</span>
+                </div>
+              </div>
+              <div style="margin: 20px">
+              <button type="submit" name="submit" id="submit" value="Register" class="btn btn-primary btn-block">Register</button>
+              </div>
+          </form>
+        </section>
+      </div>
+  </div>
 </div>

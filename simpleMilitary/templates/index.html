@@ -1,8 +1,5 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
-<script type="text/javascript" src={% static '/static/js/jquery-2.1.3.min.js' %}></script>
-<script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
-
 <!DOCTYPE html>
 <style type="text/css">
 .background {
@@ -36,125 +33,122 @@
     word-wrap: break-word;
     overflow: auto;
 }
-
-
-table.my-class {background-color: #eee;}
+table.my-class {background-color: #FFF;}
 </style>
 
+
+
+{% load extratags %}
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<title>Home | Canadian Military</title>
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<body>
+<div class="background"></div>
+<div class="text-center content">
+{% include "navbar.html" with properties=properties%}
 <script type="text/javascript">
   $(document).ready(function(){
   if (window.location.href.indexOf("search") != -1) {
     $("#stats").hide();
   }});
 </script>
-
-{% load extratags %}
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<title>The Canadian Military </title>
-
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<div class="background"></div>
-<div class="text-center content">
-{% include "navbar.html" with properties=properties%}
   <div class="container">
 <br>
 <br>
-<h2>&nbsp  Personnel</h2>
+<h2 style="color: #333;">Personnel</h2>
     {% if pdata %}
 <table class="table table-bordered my-class">
     <thead>
         <tr>
-            {% for field in pfields %}
-                <th>
-                {{ field }}
-                </th>
-            {% endfor %}
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Base</th>
         </tr>
     <br>
     </thead>
     <tbody>
             {% for d in pdata %}
                 <tr>
-                    {% for field in pfields %}
-                        <td> {% get_value_from_key d field %}</td>
-                    {% endfor %}
+                  <td> {% get_value_from_key d "First Name" %}</td>
+                  <td> {% get_value_from_key d "Last Name" %}</td>
+                  <td> {% get_value_from_key d "Base" %}</td>
                 </tr>
             {% endfor %}
     </tbody>
 </table>
     {% else %}
-        &nbsp&nbsp&nbsp No search results found in our veteran records
+        No search results found in our veteran records
     {% endif %}
 
 {% load extratags %}
 <br>
-<h2>&nbsp Veterans</h2>
+<h2 style="color: #333;">Veterans</h2>
     {% if vdata %}
 <table class="table table-bordered my-class">
     <thead>
         <tr>
-            {% for field in vfields %}
-                <th>
-                {{ field }}
-                </th>
-            {% endfor %}
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>End Date</th>
         </tr>
+    <br>
     </thead>
     <tbody>
             {% for d in vdata %}
                 <tr>
-                    {% for field in vfields %}
-                        <td> {% get_value_from_key d field %}</td>
-                    {% endfor %}
+                  <td> {% get_value_from_key d "First Name" %}</td>
+                  <td> {% get_value_from_key d "Last Name" %}</td>
+                  <td> {% get_value_from_key d "End Date" %}</td>
                 </tr>
             {% endfor %}
     </tbody>
-</table>
-    {% else %}
-        &nbsp&nbsp&nbsp No search results found in our veteran records
+</table>    {% else %}
+        No search results found in our veteran records
     {% endif %}
 
 <br>
 <br>
 <br>
 <br>
-<div id="stats"><h2>&nbsp  Statistics</h2></div>
+<div id="stats"><h2>Statistics</h2>
 
 <br>
 {% for number in new_recruits %}
     {% if number == 1 %}
-    <p>&nbsp&nbsp&nbsp We currently have {{ number }} new recruit</p>
+    <p>We currently have {{ number }} new recruit</p>
     {% else %}
-    <p>&nbsp&nbsp&nbsp We currently have {{ number }} new recruits</p>
+    <p>We currently have {{ number }} new recruits</p>
     {% endif %}
 {% endfor %}
 {% for number in ave_age %}
-        <p>&nbsp&nbsp&nbsp The average age of our personnel is {{ number }}</p>
+        <p>The average age of our personnel is {{ number }}</p>
 {% endfor %}
 {% for number in conflicts %}
     {% if number == 1 %}
-        <p>&nbsp&nbsp&nbsp We are involved in {{ number }} conflict</p>
+        <p>We are involved in {{ number }} conflict</p>
     {% else %}
-        <p>&nbsp&nbsp&nbsp We are involved in {{ number }} conflicts</p>
+        <p>We are involved in {{ number }} conflicts</p>
     {% endif %}
 {% endfor %}
 {% for number in active_duty %}
     {% if number == 1 %}
-        <p>&nbsp&nbsp&nbsp {{ number }} of our personnel is on active duty</p>
+        <p>{{ number }} of our personnel is on active duty</p>
     {% else %}
-        <p>&nbsp&nbsp&nbsp {{ number }} of our personel are on active duty</p>
+        <p>{{ number }} of our personel are on active duty</p>
     {% endif %}
 {% endfor %}
 {% for number in per_unit %}
     {% if number == 1 %}
-        <p>&nbsp&nbsp&nbsp On average, there is {{ number }} member per unit</p>
+        <p>On average, there is {{ number }} member per unit</p>
     {% else %}
-        <p>&nbsp&nbsp&nbsp On average, there are {{ number }} members per unit</p>
+        <p>On average, there are {{ number }} members per unit</p>
     {% endif %}
 {% endfor %}
+</div>
 <br>
 <br>
 </div>
-</div>
+</body>

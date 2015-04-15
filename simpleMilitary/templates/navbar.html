@@ -1,8 +1,10 @@
 {% load staticfiles %}
 
 {% load extratags %}
-<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
 <script type="text/javascript" src={% static '/static/js/jquery-2.1.3.min.js' %}></script>
+<script type="text/javascript" src={% static '/static/js/jquery_cookie.js' %}></script>
+<script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
+
 <!-- <script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
  -->
 <script type="text/javascript">
@@ -11,6 +13,7 @@
     $("#search").hide();
     $("#activepage").show();
     $("#username").hide();
+    $("#details").hide();
   });
 </script>
 
@@ -22,6 +25,7 @@
   });
 </script>
 {% endif %}
+
 
 {% if properties.super %}
 <script type="text/javascript">
@@ -43,6 +47,16 @@
   });
 </script>
 
+{% if properties.SIN_user and properties.active_page != 'personnel details' %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#details").show();
+    $("#details").children().first().prop("href", "personnel/{{ properties.username }}/");
+  });
+</script>
+{% endif %}
+
+
 {% else %}
 <script type="text/javascript">
   $(document).ready(function(){
@@ -58,7 +72,7 @@
 {% if properties.active_page == 'personnel details' %}
 <script type="text/javascript">
   $(document).ready(function(){
-    $("#activepage").children().first().text({{ properties.personnel }});
+    $("#activepage").children().first().text("{{ properties.personnel }}");
   });
 </script>
 
@@ -68,8 +82,34 @@
     $("#activepage").children().first().text("{{ properties.active_page }}");
   });
 </script>
+{% endif %}
+
+{% if properties.active_page == 'Admin Operations' %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#ops").hide();
+  });
+</script>
+{% endif %}
+
+{% if properties.active_page == 'All Personnel' %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#allPI").hide();
+    $("#adminD").hide();
+  });
+</script>
+{% endif %}
 
 
+{% if properties.hide_drops %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#admin").hide();
+    $("#account").hide();
+    $("#username").hide();
+  });
+</script>
 {% endif %}
 
 <nav class="navbar navbar-default">
@@ -93,9 +133,9 @@
           <a id="admin" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Administration <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="/admin/">Admin Panel</a></li>
-            <li><a href="/simpleMilitary/adminOperations">Admin Operations</a></li>
-            <li lass="divider"></li>
-            <li><a href="/simpleMilitary/personnel/all">Personnel Information</a></li>
+            <li id="ops"><a href="/simpleMilitary/adminOperations">Admin Operations</a></li>
+            <li id="adminD" class="divider"></li>
+            <li id="allPI"><a href="/simpleMilitary/personnel/all">Personnel Information</a></li>
           </ul>
         </li>
         <li class="dropdown">
@@ -106,6 +146,7 @@
             <li id="register"><a href="/accounts/register/">Register</a></li>
             <li id="divider" class="divider"></li>
             <li id="login"><a href="/accounts/login/">Login</a></li>
+            <li id="details"><a href="/simpleMilitary/">Personnel Details</a></li>
           </ul>
         </li>
         </ul>

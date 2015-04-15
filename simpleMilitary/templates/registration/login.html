@@ -1,155 +1,58 @@
 {% load staticfiles %}
-{% load i18n admin_static bootstrapped_goodies_tags extratags %}
-
-
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
-<!-- <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-responsive.min.css"/> -->
-<script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
-<style type="text/css">
-@media (min-width: 768px) {
-.form-signin {
-    max-width: 380px;
-    margin: 0 auto 20px;
-    background-color: #fff;
-    border: 1px solid #e5e5e5;
-    -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        border-radius: 5px;
-    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-        -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-        box-shadow: 0 1px 2px rgba(0,0,0,.05);
-}
-.form-signin-inner{
-    padding: 9px 29px 29px;
-}
-.form-signin .form-signin-heading, .form-signin .checkbox, .form-signin h2 {
-    margin-bottom: 30px;
-}
-.form-signin .form-actions{
-    margin: 0;
-}
-#id_username, #id_password{
-    display: block;
-    font-size: 16px;
-    height: 44px;
-    width: 100%;
-}
-}
-body {
-    padding-top: 60px;
-    padding-bottom: 40px;
-}
-body {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 14px;
-    line-height: 1.42857;
-    color: #333;
-    background-color: #FFF;
-}
-</style>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" >
-<head>
-    <title>Django administration | Django site admin</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-</head>
-<body>
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12"></div>
-    </div>
-    <div id="content" class="colM">
-      <div id="content-main">
-        <form class="form-signin" action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
-          <div class="form-signin-inner">
-          {% blocktrans %}<h2>Login</h2>{% endblocktrans %}
-          {% if form.errors and not form.non_field_errors and not form.this_is_the_login_form.errors %}
-            <div class="alert alert-danger">
-               {% blocktrans count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
-            </div>
-          {% endif %}
-          {% if form.non_field_errors or form.this_is_the_login_form.errors %}
-            {% for error in form.non_field_errors|add:form.this_is_the_login_form.errors %}
-            <div class="alert alert-danger">
-              {{ error }}
-            </div>
-            {% endfor %}
-          {% endif %}
-          <div class="form-group">
-            <label for="id_username" class="required">{% trans form.username.label %}</label>
-            {% if not form.this_is_the_login_form.errors %}<p class="text-danger">{{ form.username.errors|striptags }}</p>{% endif %}
-            {% dab_field_rendering form.username %}
-          </div>
-          <div class="form-group">
-            <label for="id_password" class="required">{% trans form.password.label %}</label>
-            {% if not form.this_is_the_login_form.errors %}<p class="text-danger">{{ form.password.errors|striptags }}</p>{% endif %}
-            {% dab_field_rendering form.password %}
-            <input type="hidden" name="this_is_the_login_form" value="1" />
-            <input type="hidden" name="next" value="{{ next }}" />
-          </div>
-          {% url 'admin_password_reset' as password_reset_url %}
-          {% if password_reset_url %}
-          <div class="form-group">
-            <div class="controls col-sm-offset-2 col-sm-10">
-                <a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
-            </div>
-          </div>
-          {% endif %}
-          <div class="form-actions clearfix">
-              <input type="submit" value="{% trans 'Log in' %}" class="btn btn-lg btn-primary btn-block" />
-          </div>
+{% include "navbar.html" with properties=properties%}
+
+<style type="text/css">
+
+form[role=login] {
+  color: #5d5d5d;
+  background: #f2f2f2;
+  padding: 20px;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+  form[role=login] > div {
+    margin: 10px;
+  }
+  form[role=login] #submit {
+    font-size: 14px;
+    margin: 0 10px;
+  }
+
+</style>
+<title>Login to the Canadian Military</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="utf-8">
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <section>
+        {% if state %}
+        <div class="alert alert-danger text-center">
+          {{ state }}
+        </div>
+        {% endif %}
+        <form role="login" method="POST" action="">
+          {% csrf_token %}
+            <h2  class="text-center">The Canadian Military</h2>
+              <div class="form-group">
+                  <label for="InputUsername">Username</label>
+                      <input type="text" class="form-control input" name="username" id="username" placeholder="Username or SIN">
+              </div>
+              <div class="form-group">
+                  <label for="InputEmail">Password</label>
+                      <input type="password" class="form-control input" id="password" name="password" placeholder="Password">
+              </div>
+          <input type="submit" name="submit" id="submit" value="Login" class="btn btn-primary pull-right">
+          <div>
+            <a href="/accounts/register/">Register</a>
           </div>
         </form>
-      </div>
+      </section>
     </div>
   </div>
-</body>
-<!-- <div id="content-main">
-<form class="form-signin" action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
-  <div class="form-signin-inner">
-  {% blocktrans %}<h2>Login</h2>{% endblocktrans %}
-  {% if form.errors and not form.non_field_errors and not form.this_is_the_login_form.errors %}
-    <div class="alert alert-danger">
-       {% blocktrans count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
-    </div>
-  {% endif %}
-  {% if form.non_field_errors or form.this_is_the_login_form.errors %}
-    {% for error in form.non_field_errors|add:form.this_is_the_login_form.errors %}
-    <div class="alert alert-danger">
-      {{ error }}
-    </div>
-    {% endfor %}
-  {% endif %}
-  <div class="form-group">
-    <label for="id_username" class="required">{% trans form.username.label %}</label>
-    {% if not form.this_is_the_login_form.errors %}<p class="text-danger">{{ form.username.errors|striptags }}</p>{% endif %}
-    {% dab_field_rendering form.username %}
-  </div>
-  <div class="form-group">
-    <label for="id_password" class="required">{% trans form.password.label %}</label>
-    {% if not form.this_is_the_login_form.errors %}<p class="text-danger">{{ form.password.errors|striptags }}</p>{% endif %}
-    {% dab_field_rendering form.password %}
-    <input type="hidden" name="this_is_the_login_form" value="1" />
-    <input type="hidden" name="next" value="{{ next }}" />
-  </div>
-  {% url 'admin_password_reset' as password_reset_url %}
-  {% if password_reset_url %}
-  <div class="form-group">
-    <div class="controls col-sm-offset-2 col-sm-10">
-        <a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
-    </div>
-  </div>
-  {% endif %}
-  <div class="form-actions clearfix">
-      <input type="submit" value="{% trans 'Log in' %}" class="btn btn-lg btn-primary btn-block" />
-  </div>
-  </div>
-</form>
-
-<script type="text/javascript">
-$(document).ready(function() {
-  $('#id_username').attr('autocapitalize', 'off').focus();
-})
-</script>
 </div>
- -->

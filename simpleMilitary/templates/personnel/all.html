@@ -3,7 +3,6 @@
 {% load extratags %}
 
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
-<script type="text/javascript" src={% static '/static/js/bootstrap.min.js' %}></script>
 <style type="text/css">
 .background {
   /* css needed to scale image that fills background
@@ -18,7 +17,7 @@
   width: 100%;
   height: auto;
   position: fixed;
-  background: url("/static/imgs/hero_tank.jpg") no-repeat center center fixed;
+  background: url("/static/imgs/hero_helicopter.jpg") no-repeat center center fixed;
   -webkit-filter: blur(5px);
   filter: blur(5px);
   z-index:0;
@@ -41,10 +40,11 @@
 </style>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<title>Personnel Details</title>
+<title>All Personnel | Canadian Military</title>
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<body>
 <div class="background"></div>
 <div class="content">
 {% include "navbar.html" with properties=properties%}
@@ -56,8 +56,8 @@
         <div class="panel panel-info" style="margin: 20px">
           <div class="panel-heading"> {{u.psin.fname}} {{u.psin.lname}} </div>
             <ul class="list-group">
-              <li class="list-group-item">SIN<p class="pull-right" style="text-right">{{ u.psin.sin }}</li>
-              <li class="list-group-item">Base<p class="pull-right" style="text-right">{{ u.uid.bid.bname }}</li>
+              <li class="list-group-item">SIN<p class="pull-right" style="text-right">{{ u.psin.sin }}</p></li>
+              <li class="list-group-item">Base<p class="pull-right" style="text-right">{{ u.uid.bid.bname }}</p></li>
 <!--               <li class="list-group-item">Unit<p class="pull-right" style="text-right">{{ u.uid.uname }}</li>
  -->            </ul>
             <div class="form-actions clearfix">
@@ -69,3 +69,4 @@
     </div>
   </div>
 </div>
+</body>

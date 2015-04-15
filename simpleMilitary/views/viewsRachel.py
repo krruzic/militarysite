@@ -10,12 +10,17 @@ from django.db.models import Q
 
 
 def index(request):
+    SIN_user = False
+    if request.user.is_authenticated():
+        SIN_user = request.user.username[0].isdigit()
+
     properties = {
         'username': request.user.username,
-        'super': request.user.is_superuser,
+        'super': request.user.is_staff,
         'active_page': 'Home', # set this as the TEXT the navbar displays
         'logged_in': request.user.is_authenticated(),
-        'personnel': ''
+        'personnel': '',
+        'SIN_user': SIN_user
     }
     pnames     = []
     pfields = {"First Name", "Last Name", "Base"}
@@ -35,7 +40,7 @@ def index(request):
       ave_age = {str(int(round(row[0])))}
     else:
       ave_age = {0}
-    for p in Personnel.objects.all().order_by('psin__fname'):
+    for p in Personnel.objects.all().select_related('uid__bid', 'psin').order_by('psin__lname'):
         try:
             bname = p.uid.bid.bname
         except:
@@ -43,7 +48,7 @@ def index(request):
         pnames.append({"First Name": p.psin.fname, "Last Name": p.psin.lname, "Base": bname})
     vnames     = []
     vfields = {"First Name", "Last Name", "End Date"}
-    for p in Veteran.objects.all().order_by('vsin__fname'):
+    for p in Veteran.objects.all().select_related('vsin').order_by('vsin__lname'):
         vnames.append({"First Name": p.vsin.fname, "Last Name": p.vsin.lname, "End Date": p.end_date})
     return render(request, 'index.html',
         {'pdata': pnames, 'pfields': pfields, 'vdata': vnames, 'vfields': vfields,
@@ -53,25 +58,29 @@ def index(request):
     # return render(request, 'index.html', {'data': names, 'fields': fields, 'properties': properties})
 
 def searchResults(request):
+    SIN_user = False
+    if request.user.is_authenticated():
+        SIN_user = request.user.username[0].isdigit()
     properties = {
         'username': request.user.username,
-        'super': request.user.is_superuser,
+        'super': request.user.is_staff,
         'active_page': 'Search Results', # set this as the TEXT the navbar displays
         'logged_in': request.user.is_authenticated(),
-        'personnel': ''
+        'personnel': '',
+        'SIN_user': SIN_user
     }
     results = request.GET.get('q')
     pnames     = []
     vnames     = []
     pfields = {"First Name", "Last Name", "Base"}
     vfields = {"First Name", "Last Name", "End Date"}
-    for p in Personnel.objects.order_by('psin__lname').filter(Q(psin__fname__icontains=results) | Q(psin__lname__icontains=results)):
+    for p in Personnel.objects.order_by('psin__lname').select_related('uid__bid', 'psin').filter(Q(psin__fname__icontains=results) | Q(psin__lname__icontains=results)).select_related('uid__bid', 'psin'):
         try:
             bname = p.uid.bid.bname
         except:
             bname = ""
         pnames.append({"First Name": p.psin.fname, "Last Name": p.psin.lname, "Base": bname})
-    for p in Veteran.objects.order_by('vsin__lname').filter(Q(vsin__fname__icontains=results) | Q(vsin__lname__icontains=results)):
+    for p in Veteran.objects.order_by('vsin__lname').select_related('vsin').filter(Q(vsin__fname__icontains=results) | Q(vsin__lname__icontains=results)).select_related('vsin'):
         vnames.append({"First Name": p.vsin.fname, "Last Name": p.vsin.lname, "End Date": p.end_date})
     context_instance = RequestContext(request, {
         'pdata'      : pnames,
