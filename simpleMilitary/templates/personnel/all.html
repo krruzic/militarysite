@@ -44,6 +44,7 @@
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<body>
 <div class="background"></div>
 <div class="content">
 {% include "navbar.html" with properties=properties%}
@@ -55,8 +56,8 @@
         <div class="panel panel-info" style="margin: 20px">
           <div class="panel-heading"> {{u.psin.fname}} {{u.psin.lname}} </div>
             <ul class="list-group">
-              <li class="list-group-item">SIN<p class="pull-right" style="text-right">{{ u.psin.sin }}</li>
-              <li class="list-group-item">Base<p class="pull-right" style="text-right">{{ u.uid.bid.bname }}</li>
+              <li class="list-group-item">SIN<p class="pull-right" style="text-right">{{ u.psin.sin }}</p></li>
+              <li class="list-group-item">Base<p class="pull-right" style="text-right">{{ u.uid.bid.bname }}</p></li>
 <!--               <li class="list-group-item">Unit<p class="pull-right" style="text-right">{{ u.uid.uname }}</li>
  -->            </ul>
             <div class="form-actions clearfix">
@@ -68,3 +69,4 @@
     </div>
   </div>
 </div>
+</body>

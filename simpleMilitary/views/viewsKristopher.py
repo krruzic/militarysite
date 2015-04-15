@@ -24,7 +24,7 @@ def personnelDetail(request, personnel_sin):
     if request.user.is_authenticated():
         SIN_user = request.user.username[0].isdigit()
     try:
-        personnel = Personnel.objects.get(pk=personnel_sin)
+        personnel = Personnel.objects.select_related('uid__bid', 'psin').get(pk=personnel_sin)
         weapons = AuthorizedToUse.objects.distinct().filter(psin=personnel_sin)
         awards = AwardedTo.objects.distinct().filter(sin=personnel_sin)
     except Personnel.DoesNotExist:
@@ -153,7 +153,7 @@ def admin_operations(request):
         'personnel': '',
         'SIN_user': SIN_user
     }
-    personnel = Personnel.objects.all().order_by('psin__fname')
+    personnel = Personnel.objects.all().order_by('psin__fname').select_related('psin')
 
     if request.user.is_staff:
         print "Administrator!"
@@ -171,7 +171,7 @@ def admin_operations(request):
                 "application/json"
             )
         for sin in request.POST.getlist('selected[]'):
-            p = Personnel.objects.get(pk=sin)
+            p = Personnel.objects.get(pk=sin).select_related('psin')
             print("line 1")
             response_data['people'].append(p.psin.fname + " " + p.psin.lname)
             print("line 2")
@@ -205,6 +205,6 @@ def all_personnel(request):
     }
     if not request.user.is_staff:
         print "Not superuser, don't show this page"
-    p = Personnel.objects.all()
+    p = Personnel.objects.all().select_related('uid__bid', 'psin')
     return render(request, 'personnel/all.html', {'users': p, 'properties': properties})
 

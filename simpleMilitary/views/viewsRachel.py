@@ -40,7 +40,8 @@ def index(request):
       ave_age = {str(int(round(row[0])))}
     else:
       ave_age = {0}
-    for p in Personnel.objects.all().order_by('psin__fname'):
+    ps = Personnel.objects.all().order_by('psin__fname').select_related('uid__bid', 'psin')
+    for p in ps:
         try:
             bname = p.uid.bid.bname
         except:
@@ -48,7 +49,7 @@ def index(request):
         pnames.append({"First Name": p.psin.fname, "Last Name": p.psin.lname, "Base": bname})
     vnames     = []
     vfields = {"First Name", "Last Name", "End Date"}
-    for p in Veteran.objects.all().order_by('vsin__fname'):
+    for p in Veteran.objects.all().order_by('vsin__fname').select_related('vsin'):
         vnames.append({"First Name": p.vsin.fname, "Last Name": p.vsin.lname, "End Date": p.end_date})
     return render(request, 'index.html',
         {'pdata': pnames, 'pfields': pfields, 'vdata': vnames, 'vfields': vfields,
@@ -74,13 +75,13 @@ def searchResults(request):
     vnames     = []
     pfields = {"First Name", "Last Name", "Base"}
     vfields = {"First Name", "Last Name", "End Date"}
-    for p in Personnel.objects.order_by('psin__fname').filter(Q(psin__fname__icontains=results) | Q(psin__lname__icontains=results)):
+    for p in Personnel.objects.order_by('psin__fname').filter(Q(psin__fname__icontains=results) | Q(psin__lname__icontains=results)).select_related('uid__bid', 'psin'):
         try:
             bname = p.uid.bid.bname
         except:
             bname = ""
         pnames.append({"First Name": p.psin.fname, "Last Name": p.psin.lname, "Base": bname})
-    for p in Veteran.objects.order_by('vsin__fname').filter(Q(vsin__fname__icontains=results) | Q(vsin__lname__icontains=results)):
+    for p in Veteran.objects.order_by('vsin__fname').filter(Q(vsin__fname__icontains=results) | Q(vsin__lname__icontains=results)).select_related('vsin'):
         vnames.append({"First Name": p.vsin.fname, "Last Name": p.vsin.lname, "End Date": p.end_date})
     context_instance = RequestContext(request, {
         'pdata'      : pnames,
