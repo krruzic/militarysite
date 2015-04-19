@@ -13,8 +13,7 @@ django.jQuery(document).ready(function() {
   });
   django.jQuery( "table .vTextField" ).each(function( index ) {
     django.jQuery(this).css({'border-color': 'transparent', 'background': 'inherit', 'box-shadow': 'none'});
-    // django.jQuery(this).prop("readonly", true);
-    django.jQuery(this).prop("disabled", true);
+    django.jQuery(this).prop("readonly", true);
   });
 });
 

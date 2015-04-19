@@ -23,8 +23,8 @@ class PersonnelAdmin(admin.ModelAdmin):
     list_display = ('get_fname', 'get_lname', 'get_sin')
     list_filter = ['status','rank']
 
-    # class Media:
-    #     js = ("/static/js/hide_mypersonnel_info.js",)
+    class Media:
+        js = ("/static/js/hide_mypersonnel_info.js",)
 
 
 
@@ -56,6 +56,7 @@ class UnitAdmin(admin.ModelAdmin):
     list_display = ('uname', 'type', 'get_bname', 'get_cname', 'uid')
     list_filter = ['type']
     inlines = [PersonnelInline]
+
     class Media:
         js = ("/static/js/hide_myunit_info.js",)
 
@@ -78,6 +79,7 @@ class BaseAdmin(admin.ModelAdmin):
     list_display = ('bname', 'type', 'location', 'bid')
     list_filter = ['type']
     inlines = [UnitInline]
+
     class Media:
         js = ("/static/js/hide_mybase_info.js",)
 
