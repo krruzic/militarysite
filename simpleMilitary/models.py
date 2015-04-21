@@ -198,5 +198,5 @@ class Veteran(models.Model):
         db_table = 'VETERAN'
 
     def __unicode__(self):
-        return (self.vsin)
+        return (self.vsin.fname + self.vsin.lname)
 
