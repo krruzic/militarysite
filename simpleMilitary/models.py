@@ -24,7 +24,7 @@ class AuthorizedToUse(models.Model):
 
 class Award(models.Model):
     code = models.IntegerField(db_column='CODE', primary_key=True)  # Field name made lowercase.
-    aname = models.CharField(db_column='ANAME', max_length=30, blank=True)  # Field name made lowercase.
+    aname = models.CharField(db_column='ANAME', max_length=30, blank=True, verbose_name="Award")  # Field name made lowercase.
 
     class Meta:
         db_table = 'AWARD'
@@ -44,7 +44,7 @@ class AwardedTo(models.Model):
         db_table = 'AWARDED_TO'
 
 class Base(models.Model):
-    bid = models.CharField(db_column='BID', primary_key=True, max_length=5, verbose_name='Base ID')  # Field name made lowercase.
+    bid = models.CharField(db_column='BID', primary_key=True, max_length=5, verbose_name='ID')  # Field name made lowercase.
     bname = models.CharField(db_column='BNAME', max_length=30, verbose_name='Base')  # Field name made lowercase.
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     location = models.CharField(db_column='LOCATION', max_length=30, blank=True)  # Field name made lowercase.
@@ -58,9 +58,9 @@ class Base(models.Model):
 
 
 class Conflict(models.Model):
-    cid = models.CharField(db_column='CID', primary_key=True, max_length=5)  # Field name made lowercase.
+    cid = models.CharField(db_column='CID', primary_key=True, max_length=5, verbose_name="ID")  # Field name made lowercase.
     cname = models.CharField(db_column='CNAME', max_length=30, verbose_name='Conflict')  # Field name made lowercase.
-    start_date = models.DateField(db_column='START_DATE', blank=True, null=True)  # Field name made lowercase.
+    start_date = models.DateField(db_column='START_DATE', blank=True, null=True, verbose_name="Start Date")  # Field name made lowercase.
     status = models.CharField(db_column='STATUS', max_length=10, blank=True)  # Field name made lowercase.
 
     class Meta:
@@ -72,7 +72,7 @@ class Conflict(models.Model):
 
 
 class Equipment(models.Model):
-    serialno = models.CharField(db_column='SERIALNO', primary_key=True, max_length=5)  # Field name made lowercase.
+    serialno = models.CharField(db_column='SERIALNO', primary_key=True, max_length=5, verbose_name="Serial No.")  # Field name made lowercase.
     ename = models.CharField(db_column='ENAME', max_length=30, blank=True, verbose_name='Name')  # Field name made lowercase.
     status = models.CharField(db_column='STATUS', max_length=30, blank=True)  # Field name made lowercase.
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
@@ -90,8 +90,8 @@ class Equipment(models.Model):
 
 
 class Operations(models.Model):
-    cid = models.ForeignKey(Conflict, db_column='CID', blank=True, null=True)  # Field name made lowercase.
-    oname = models.CharField(db_column='ONAME', max_length=30, blank=True)  # Field name made lowercase.
+    cid = models.ForeignKey(Conflict, db_column='CID', blank=True, null=True, verbose_name="ID")  # Field name made lowercase.
+    oname = models.CharField(db_column='ONAME', max_length=30, blank=True, verbose_name="Operation")  # Field name made lowercase.
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     id = models.IntegerField(db_column='ID', primary_key=True)  # Field name made lowercase.
 
@@ -104,9 +104,6 @@ class Operations(models.Model):
     def __unicode__(self):
         return (self.oname + "-" + self.cid.cname)
 
-class PersonnelManager(models.Manager):
-    def get_queryset(self):
-        return super(PersonnelManager, self).get_queryset().select_related('psin', 'uid')
 
 
 class Person(models.Model):
@@ -127,6 +124,10 @@ class Person(models.Model):
         return (self.sin)
 
     short_description = 'Name'
+
+class PersonnelManager(models.Manager):
+    def get_queryset(self):
+        return super(PersonnelManager, self).get_queryset().select_related('psin', 'uid')
 
 
 class Personnel(models.Model):
@@ -171,7 +172,7 @@ class Personnel(models.Model):
 
 
 class Unit(models.Model):
-    uid = models.CharField(db_column='UID', primary_key=True, max_length=5, verbose_name='Unit')  # Field name made lowercase.
+    uid = models.CharField(db_column='UID', primary_key=True, max_length=5, verbose_name='ID')  # Field name made lowercase.
     uname = models.CharField(db_column='UNAME', max_length=40, verbose_name='Unit')  # Field name made lowercase.
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     bid = models.ForeignKey(Base, db_column='BID', blank=True, null=True, verbose_name="Base")  # Field name made lowercase.
@@ -200,15 +201,30 @@ class Unit(models.Model):
     get_cname.short_description = 'Conflict'  #Renames column head
     get_bname.short_description = 'Base'  #Renames column head
 
-
+class VeteranManager(models.Manager):
+    def get_queryset(self):
+        return super(VeteranManager, self).get_queryset().select_related('vsin')
 
 class Veteran(models.Model):
     vsin = models.ForeignKey(Person, db_column='VSIN', primary_key=True)  # Field name made lowercase.
-    end_date = models.DateField(db_column='END_DATE', blank=True, null=True)  # Field name made lowercase.
+    end_date = models.DateField(db_column='END_DATE', blank=True, null=True, verbose_name="End Date")  # Field name made lowercase.
+    objects = PersonnelManager() # The default manager.
 
     class Meta:
         db_table = 'VETERAN'
 
-    def __unicode__(self):
-        return (self.vsin.fname + self.vsin.lname)
+    def get_fname(self):
+        return u'%s' % self.vsin.fname
 
+    def get_name(self):
+        return u'%s' % (self.vsin.fname + " " + self.vsin.lname)
+
+    def get_lname(self):
+        return u'%s' % self.vsin.lname
+
+    def __unicode__(self):
+        return (self.vsin.fname + " " + self.vsin.lname)
+
+    get_name.short_description = 'Name'
+    get_fname.short_description = 'First Name'  #Renames column head
+    get_lname.short_description = 'Last Name'  #Renames column head

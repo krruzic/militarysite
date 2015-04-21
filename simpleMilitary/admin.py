@@ -13,7 +13,7 @@ class PersonnelAdmin(admin.ModelAdmin):
             ('Personal Information', {'fields': ['psin', 'supersin']}),
             ('Service Information',  {'fields': ['rank', 'status', 'uid']}),
         ]
-        if obj is None:
+        if obj is None: # add
             self.fieldsets = self.add_fieldsets
         else:
             self.readonly_fields = ['get_name']
@@ -25,10 +25,6 @@ class PersonnelAdmin(admin.ModelAdmin):
 
     class Media:
         js = ("/static/js/hide_mypersonnel_info.js",)
-
-
-
-
 
 class PersonnelInline(admin.TabularInline):
     model = Personnel
@@ -60,11 +56,10 @@ class UnitAdmin(admin.ModelAdmin):
     class Media:
         js = ("/static/js/hide_myunit_info.js",)
 
-
-
 class UnitInline(admin.TabularInline):
     model = Unit
     extra = 0
+    exclude = ['uname']
     def has_delete_permission(self, request, obj=None):
         return False
     def has_add_permission(self, request, obj=None):
@@ -84,15 +79,46 @@ class BaseAdmin(admin.ModelAdmin):
         js = ("/static/js/hide_mybase_info.js",)
 
 
+class VeteranAdmin(admin.ModelAdmin):
+    fieldsets = [
+            ('Personal Information', {'fields': ['get_name', 'vsin']}),
+            ('Service Information',  {'fields': ['end_date']}),
+        ]
+    readonly_fields = ('vsin', 'get_name',)
+    search_fields = ['vsin__fname','vsin__lname']
+    list_display = ('get_fname', 'get_lname', 'end_date',)
+    def has_add_permission(self, request):
+        return False
 
+    class Media:
+        js = ("/static/js/hide_mypersonnel_info.js",)
+
+class ConflictAdmin(admin.ModelAdmin):
+    def get_formsets(self, request, obj=None):
+        self.exclude = None
+        self.change_fieldsets = [
+            ('Conflict Information', {'fields': ['cname', 'status', 'start_date']}),
+        ]
+        self.add_fieldsets = [
+            ('Conflict Information', {'fields': ['cname', 'status', 'start_date', 'cid']}),
+        ]
+        if obj is None: # add
+            self.fieldsets = self.add_fieldsets
+        else:
+            self.exclude = ['cid']
+            self.fieldsets = self.change_fieldsets
+        return super(ConflictAdmin, self).get_formsets(request, obj)
+
+class EquipmentAdmin(admin.ModelAdmin):
+    pass
 
 
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Personnel, PersonnelAdmin)
 admin.site.register(Unit, UnitAdmin)
 admin.site.register(Base, BaseAdmin)
-admin.site.register(Conflict)
-admin.site.register(Equipment)
+admin.site.register(Conflict, ConflictAdmin)
+admin.site.register(Equipment, EquipmentAdmin)
 admin.site.register(Operations)
 admin.site.register(Award)
-admin.site.register(Veteran)
+admin.site.register(Veteran, VeteranAdmin)
