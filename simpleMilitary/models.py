@@ -104,6 +104,10 @@ class Operations(models.Model):
     def __unicode__(self):
         return (self.oname + "-" + self.cid.cname)
 
+class PersonnelManager(models.Manager):
+    def get_queryset(self):
+        return super(PersonnelManager, self).get_queryset().select_related('psin', 'uid')
+
 
 class Person(models.Model):
     sin = models.CharField(db_column='SIN', primary_key=True, max_length=9, verbose_name='Name')  # Field name made lowercase.
@@ -136,6 +140,9 @@ class Personnel(models.Model):
         verbose_name_plural = 'Personnel'
         db_table = 'PERSONNEL'
     short_description = 'Name'
+    objects = PersonnelManager() # The default manager.
+    def queryset(self):
+        return super(Personnel, self).queryset().select_related('psin', 'uid')
 
     def __unicode__(self):
         return (self.psin.fname + " " + self.psin.lname)
@@ -151,9 +158,11 @@ class Personnel(models.Model):
 
     def get_sin(self):
         try:
-            return u'%s' % self.psin
+            return u'%s' % self.psin.sin
         except Person.DoesNotExist:
             return u'No Person'
+
+
 
     get_name.short_description = 'Name'
     get_fname.short_description = 'First Name'  #Renames column head
