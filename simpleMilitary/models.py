@@ -44,7 +44,7 @@ class AwardedTo(models.Model):
         db_table = 'AWARDED_TO'
 
 class Base(models.Model):
-    bid = models.CharField(db_column='BID', primary_key=True, max_length=5)  # Field name made lowercase.
+    bid = models.CharField(db_column='BID', primary_key=True, max_length=5, verbose_name='Base ID')  # Field name made lowercase.
     bname = models.CharField(db_column='BNAME', max_length=30, verbose_name='Base')  # Field name made lowercase.
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     location = models.CharField(db_column='LOCATION', max_length=30, blank=True)  # Field name made lowercase.
@@ -171,7 +171,7 @@ class Personnel(models.Model):
 
 
 class Unit(models.Model):
-    uid = models.CharField(db_column='UID', primary_key=True, max_length=5)  # Field name made lowercase.
+    uid = models.CharField(db_column='UID', primary_key=True, max_length=5, verbose_name='Unit')  # Field name made lowercase.
     uname = models.CharField(db_column='UNAME', max_length=40, verbose_name='Unit')  # Field name made lowercase.
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     bid = models.ForeignKey(Base, db_column='BID', blank=True, null=True, verbose_name="Base")  # Field name made lowercase.
@@ -181,6 +181,8 @@ class Unit(models.Model):
     class Meta:
         db_table = 'UNIT'
 
+    def __unicode__(self):
+        return u'%s' % self.uname
 
     def get_bname(self):
         if self.bid is not None:
@@ -193,6 +195,7 @@ class Unit(models.Model):
             return self.cid.cname
         else:
             return ""
+
 
     get_cname.short_description = 'Conflict'  #Renames column head
     get_bname.short_description = 'Base'  #Renames column head
