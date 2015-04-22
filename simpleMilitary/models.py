@@ -13,7 +13,7 @@ from django.db import models
 
 
 class AuthorizedToUse(models.Model):
-    psin = models.ForeignKey('Personnel', db_column='PSIN', blank=True, null=True)  # Field name made lowercase.
+    psin = models.ForeignKey('Personnel', db_column='PSIN', blank=True, null=True, verbose_name="SIN")  # Field name made lowercase.
     serialno = models.ForeignKey('Equipment', db_column='SERIALNO', blank=True, null=True)  # Field name made lowercase.
     id = models.IntegerField(db_column='ID', primary_key=True)  # Field name made lowercase.
 
@@ -21,6 +21,8 @@ class AuthorizedToUse(models.Model):
         unique_together = ('psin', 'serialno')
         db_table = 'AUTHORIZED_TO_USE'
 
+    def __unicode__(self):
+        return (self.serialno.serialno)
 
 class Award(models.Model):
     code = models.IntegerField(db_column='CODE', primary_key=True)  # Field name made lowercase.
@@ -76,13 +78,24 @@ class Equipment(models.Model):
     ename = models.CharField(db_column='ENAME', max_length=30, blank=True, verbose_name='Name')  # Field name made lowercase.
     status = models.CharField(db_column='STATUS', max_length=30, blank=True)  # Field name made lowercase.
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
-    bid = models.ForeignKey(Base, db_column='BID', blank=True, null=True)  # Field name made lowercase.
-    cid = models.ForeignKey(Conflict, db_column='CID', blank=True, null=True)  # Field name made lowercase.
+    bid = models.ForeignKey(Base, db_column='BID', blank=True, null=True, verbose_name="Base")  # Field name made lowercase.
+    cid = models.ForeignKey(Conflict, db_column='CID', blank=True, null=True, verbose_name="Conflict")  # Field name made lowercase.
 
     class Meta:
         verbose_name = 'Equipment'
         verbose_name_plural = 'Equipment'
         db_table = 'EQUIPMENT'
+
+    def get_bname(self):
+        if self.bid is not None:
+            return self.bid.bname
+        else:
+            return ""
+    def get_cname(self):
+        if self.cid is not None:
+            return self.cid.cname
+        else:
+            return ""
 
     def __unicode__(self):
         return (self.ename + "-" + self.serialno)
@@ -90,7 +103,7 @@ class Equipment(models.Model):
 
 
 class Operations(models.Model):
-    cid = models.ForeignKey(Conflict, db_column='CID', blank=True, null=True, verbose_name="ID")  # Field name made lowercase.
+    cid = models.ForeignKey(Conflict, db_column='CID', blank=True, null=True, verbose_name="Conflict")  # Field name made lowercase.
     oname = models.CharField(db_column='ONAME', max_length=30, blank=True, verbose_name="Operation")  # Field name made lowercase.
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     id = models.IntegerField(db_column='ID', primary_key=True)  # Field name made lowercase.
@@ -101,6 +114,11 @@ class Operations(models.Model):
         unique_together = ('cid', 'oname')
         db_table = 'OPERATIONS'
 
+    def get_cname(self):
+        if self.cid is not None:
+            return self.cid.cname
+        else:
+            return ""
     def __unicode__(self):
         return (self.oname + "-" + self.cid.cname)
 
@@ -163,8 +181,15 @@ class Personnel(models.Model):
         except Person.DoesNotExist:
             return u'No Person'
 
-
-
+    def get_awards(self):
+        try:
+            awards = AwardedTo.objects.all().filter(sin=self.psin).values('code__aname')
+            if 'code__aname' in awards[0]:
+                return awards[0].get('code__aname')
+            return 'No Awards'
+        except:
+            return 'No Awards'
+    get_awards.short_description = 'Awards'
     get_name.short_description = 'Name'
     get_fname.short_description = 'First Name'  #Renames column head
     get_lname.short_description = 'Last Name'  #Renames column head
@@ -212,6 +237,9 @@ class Veteran(models.Model):
 
     class Meta:
         db_table = 'VETERAN'
+
+    def get_enlist(self):
+        return u'%s' %self.vsin.enlist_date
 
     def get_fname(self):
         return u'%s' % self.vsin.fname
