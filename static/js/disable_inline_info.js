@@ -15,5 +15,13 @@ django.jQuery(document).ready(function() {
     django.jQuery(this).css({'border-color': 'transparent', 'background': 'inherit', 'box-shadow': 'none'});
     django.jQuery(this).prop("readonly", true);
   });
+  django.jQuery("table .field-id").each(function( index ) {
+    django.jQuery(this).hide();
+  });
+  django.jQuery("table .required").each(function( index ) {
+    if (django.jQuery(this).not(':contains("SIN")')) {
+      django.jQuery(this).hide();
+    }
+  });
 });
 
