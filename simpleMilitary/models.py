@@ -133,10 +133,10 @@ class Operations(models.Model):
 
 
 class Person(models.Model):
-    sin = models.CharField(db_column='SIN', primary_key=True, max_length=9, verbose_name='Name')  # Field name made lowercase.
+    sin = models.CharField(db_column='SIN', primary_key=True, max_length=9, verbose_name='SIN')  # Field name made lowercase.
     address = models.CharField(db_column='ADDRESS', max_length=50, blank=True)  # Field name made lowercase.
-    fname = models.CharField(db_column='FNAME', max_length=15, verbose_name="Name")  # Field name made lowercase.
-    lname = models.CharField(db_column='LNAME', max_length=15)  # Field name made lowercase.
+    fname = models.CharField(db_column='FNAME', max_length=15, verbose_name="First name")  # Field name made lowercase.
+    lname = models.CharField(db_column='LNAME', max_length=15, verbose_name="Last name")  # Field name made lowercase.
     sex = models.CharField(db_column='SEX', max_length=1, blank=True)  # Field name made lowercase.
     bdate = models.DateField(db_column='BDATE', blank=True, null=True)  # Field name made lowercase.
     enlist_date = models.DateField(db_column='ENLIST_DATE', blank=True, null=True)  # Field name made lowercase.
