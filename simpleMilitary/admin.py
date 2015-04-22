@@ -172,8 +172,13 @@ class OperationsAdmin(admin.ModelAdmin):
 
 
 class VeteranAdmin(admin.ModelAdmin):
-    search_fields = ['fname', 'lname']
+    readonly_fields = ['vsin', 'get_name', 'get_enlist']
+    search_fields = ['vsin__fname', 'vsin__lname']
     list_display = ('get_fname', 'get_lname', 'end_date', 'vsin')
+    fieldsets = [
+        ('Personal Information', {'fields': ['get_name']}),
+        ('Service Information',  {'fields': ['vsin', 'get_enlist', 'end_date']}),
+    ]
     def has_add_permission(self, request, obj=None):
         return False
     class Media:

@@ -71,6 +71,9 @@ class Conflict(models.Model):
     def __unicode__(self):
         return (self.cname)
 
+class EquipmentManager(models.Manager):
+    def get_queryset(self):
+        return super(EquipmentManager, self).get_queryset().select_related('cid', 'bid')
 
 
 class Equipment(models.Model):
@@ -80,6 +83,7 @@ class Equipment(models.Model):
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     bid = models.ForeignKey(Base, db_column='BID', blank=True, null=True, verbose_name="Base")  # Field name made lowercase.
     cid = models.ForeignKey(Conflict, db_column='CID', blank=True, null=True, verbose_name="Conflict")  # Field name made lowercase.
+    objects = EquipmentManager() # The default manager.
 
     class Meta:
         verbose_name = 'Equipment'
@@ -100,6 +104,9 @@ class Equipment(models.Model):
     def __unicode__(self):
         return (self.ename + "-" + self.serialno)
 
+class OperationsManager(models.Manager):
+    def get_queryset(self):
+        return super(OperationsManager, self).get_queryset().select_related('cid')
 
 
 class Operations(models.Model):
@@ -107,6 +114,7 @@ class Operations(models.Model):
     oname = models.CharField(db_column='ONAME', max_length=30, blank=True, verbose_name="Operation")  # Field name made lowercase.
     type = models.CharField(db_column='TYPE', max_length=30, blank=True)  # Field name made lowercase.
     id = models.IntegerField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    objects = OperationsManager() # The default manager.
 
     class Meta:
         verbose_name = 'Operations'
@@ -231,7 +239,7 @@ class VeteranManager(models.Manager):
         return super(VeteranManager, self).get_queryset().select_related('vsin')
 
 class Veteran(models.Model):
-    vsin = models.ForeignKey(Person, db_column='VSIN', primary_key=True)  # Field name made lowercase.
+    vsin = models.ForeignKey(Person, db_column='VSIN', primary_key=True, verbose_name="SIN")  # Field name made lowercase.
     end_date = models.DateField(db_column='END_DATE', blank=True, null=True, verbose_name="End Date")  # Field name made lowercase.
     objects = PersonnelManager() # The default manager.
 
@@ -253,6 +261,7 @@ class Veteran(models.Model):
     def __unicode__(self):
         return (self.vsin.fname + " " + self.vsin.lname)
 
+    get_enlist.short_description = 'Enlist Date'
     get_name.short_description = 'Name'
     get_fname.short_description = 'First Name'  #Renames column head
     get_lname.short_description = 'Last Name'  #Renames column head

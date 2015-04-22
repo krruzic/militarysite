@@ -25,8 +25,10 @@ def personnelDetail(request, personnel_sin):
         SIN_user = request.user.username[0].isdigit()
     try:
         personnel = Personnel.objects.select_related('uid__bid', 'psin').get(pk=personnel_sin)
-        weapons = AuthorizedToUse.objects.distinct().filter(psin=personnel_sin)
-        awards = AwardedTo.objects.distinct().filter(sin=personnel_sin)
+        weapons = AuthorizedToUse.objects.filter(psin=personnel_sin).values('serialno__ename', 'serialno__type').distinct()
+        awards = AwardedTo.objects.filter(sin=personnel_sin).values('code__aname').distinct()
+        print weapons
+        print awards
     except Personnel.DoesNotExist:
         raise Http404("No such personnel")
     if personnel.psin.sin != request.user.username and not request.user.is_staff:

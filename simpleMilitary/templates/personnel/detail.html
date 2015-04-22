@@ -80,8 +80,8 @@
                 </tr>
                 {% for weapon in weapons %}
                 <tr>
-                  <td> {{ weapon.serialno.ename }} </td>
-                  <td> {{ weapon.serialno.type }} </td>
+                  <td> {{ weapon.serialno__ename }} </td>
+                  <td> {{ weapon.serialno__type }} </td>
                 </tr>
                 {% endfor %}
               </thead>
@@ -93,7 +93,7 @@
             <div class="panel-heading">Awards</div>
             <ul class="list-group">
               {% for award in awards %}
-              <li class="list-group-item">{{ award.code.aname }}</li>
+              <li class="list-group-item">{{ award.code__aname }}</li>
               {% endfor %}
             </ul>
           </div>

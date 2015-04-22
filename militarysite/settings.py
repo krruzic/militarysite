@@ -31,10 +31,10 @@ DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer
 SECRET_KEY = '1*9#0oy6&muomb$%p6tmuaip&t4fo1t8h-fa1tix!5-y*ucc8l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
